@@ -1,0 +1,97 @@
+
+\documentclass[
+font=12pt,
+%paper=5.5in:8.5in,
+a5paper,
+]{scrbook} % Document font size and paper size
+\usepackage{bard}
+\usepackage{illustrations}
+\usepackage{pdfpages}
+
+\title{The Tempest}
+\author{William Shakespeare}
+\renewfontfamily\chapterfont{DellaRespira-Regular.ttf}
+
+\makeatletter
+\@ifundefined{ifpictures}{\newif\ifpictures}{}
+\makeatother
+\picturestrue
+%\picturesfalse
+
+\ifpictures
+    \includecomment{pictures}
+    \excludecomment{placeholder}
+\else
+    \excludecomment{pictures}
+    \includecomment{placeholder}
+\fi
+
+\def\topedgesink{-1.5cm}
+\def\textsink{5cm}
+
+%\tikzset{every node/.style={font=\chapterfont\Huge}}
+
+\begin{document}
+\frontmatter
+\begin{pictures}
+	\includepdf[width=1.1\textwidth]{images/titlepage.jpg}
+	\includepdf[width=1.1\textwidth]{images/drampat.jpg}
+\end{pictures}
+\tableofcontents
+
+\mainmatter
+\KOMAoptions{headings=openright}
+
+\include{chapters/1i.tex}
+\include{chapters/1ii.tex}
+\include{chapters/2i.tex}
+\include{chapters/2ii.tex}
+\include{chapters/3i.tex}
+\include{chapters/3ii.tex}
+\include{chapters/3iii.tex}
+\include{chapters/4i.tex}
+\include{chapters/5i.tex}
+
+
+\RedeclareSectionCommand[afterskip=1cm,beforeskip=0cm]{chapter}
+\KOMAoptions{headings=openleft}
+%\chapter*{Colophon}
+%\setfontfamily\chapterfont{DellaRespira-Regular.ttf}
+\renewcommand\raggedsection{\centering} 
+\begin{tikzpicture}[remember picture, overlay]
+	\node (img) at ($(current page.north)-(0cm,3.5cm)$) {\includegraphics[width=.6\textwidth]{colophon}};
+\end{tikzpicture}
+\vspace*{8em}
+\centering
+
+\begin{minipage}{\textwidth}
+\textit{The Tempest} was probably written in 1610 or 1611, not long before William Shakespeare (1564--1616) retired from the stage and returned to his native Stratford-upon-Avon. It was first published by William Jaggard in London, in 1623, as part of \textit{Mr. William Shakespeare's Comedies, Histories, \& Tragedies; Published according to the True and Original Copies}: the so-called <First Folio>.
+
+Illustrations by Arthur Rackham (1867--1939) are from a 1926 edition published by William Heinemann Ltd. in London (UK) and by Doubleday, Page \& Co. in New York City (USA). 
+\end{minipage}
+\vfill
+gutenberg.org/ebooks/23042
+\vfill
+\rule{0.5\textwidth}{.4pt}
+\vfill
+\begin{minipage}{\textwidth}
+Text is set in <EB Garamond,> Georg Mayr-Duffner's free and open source implementation of Claude Garamond’s famous humanist typefaces from the mid-sixteenth century. 
+
+Chapter heads are set in <Della Respira,> by Nathan Willis, based on the 1913 American Type Founders font <Della Robbia.>
+\end{minipage}
+\vfill
+github.com/georgd/EB-Garamond\\www.glyphography.com/fonts/
+\vfill
+\rule{0.5\textwidth}{.4pt}
+\vfill
+\begin{minipage}{\textwidth}
+This typeset is dedicated to the public domain under a Creative Commons CC0 1.0 Universal deed: creativecommons.org/publicdomain/zero/1.0/\\
+\end{minipage}
+\vfill
+\rule{0.5\textwidth}{.4pt}
+\vfill
+Typeset in \LaTeX{}. Last revised \today.
+\vfill
+\thispagestyle{empty}
+
+\end{document}

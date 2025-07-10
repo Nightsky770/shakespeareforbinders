@@ -1,0 +1,411 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{bard}[2024/10/22 v1.0 Shakespeare play formatting]
+
+% Required packages - basic
+\RequirePackage{lettrine}
+\RequirePackage{fontspec}
+\RequirePackage{microtype}
+\RequirePackage{etoolbox}    % For \ifdefstring
+\RequirePackage{xparse}
+\RequirePackage{calc}
+\RequirePackage{setspace}    % For \widthof
+\RequirePackage[maxlevel=3,autostyle]{csquotes}
+\RequirePackage{polyglossia}
+\RequirePackage[all,defaultlines=2]{nowidow}
+\RequirePackage{comment}
+\RequirePackage{scrextend}  % For \cleardoubleoddpage
+\RequirePackage{needspace}  % For keeping content together
+\RequirePackage{enumitem} % setups for dramatis personae pages etc
+
+
+%%%%%%%%%%%%%%%%%%% Chapter heads %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newfontfamily\chapterfont{EB Garamond} %Makes a good default. If needed, override in document with \renewfontfamily\chapterfont{whatever}
+\setkomafont{chapter}{\chapterfont\Huge}
+
+\newcommand{\resetchapskip}{\renewcommand*{\chapterheadstartvskip}{\vspace{\@tempskipa}}} %should we wish to restore the chapter head settings
+
+\renewcommand\raggedsection{\centering} %always center chapter heads
+
+% Balanced chapter heading position
+\RedeclareSectionCommand[
+  beforeskip=2.0\baselineskip,
+  afterskip=1.5\baselineskip
+]{chapter}
+%%%%%%%%%%%%%%%%%%%%%%%%%%% end chapter heads %%%%%%%%%%%%%%%%%%%%%%
+
+\makeatletter
+
+\newcommand*{\centerfloat}{%
+  \parindent \z@
+  \leftskip \z@ \@plus 1fil \@minus \textwidth
+  \rightskip\leftskip
+  \parfillskip \z@skip}
+
+% KOMA check and setup with paper size detection
+\@ifclassloaded{scrbook}{%
+    % Basic KOMA options that apply to both sizes
+    \KOMAoptions{%
+        headheight=2.5\baselineskip,
+        footheight=1\baselineskip,
+        twoside=true,
+        usegeometry=true
+    }
+    
+    % Paper size specific settings
+    \@ifclasswith{scrbook}{a5paper}{%
+        % A5 paper geometry settings
+        \RequirePackage[
+            twoside=true,
+            bindingoffset=7mm,
+            top=0.5in,
+            bottom=0.75in,
+            includehead,
+            includefoot,
+            headsep=1.5\baselineskip,
+            headheight=2.5\baselineskip,
+            footskip=2\baselineskip,
+            marginratio=2:3,
+            width=112mm,
+            height=175mm
+        ]{geometry}
+    }{%
+        % Other paper geometry settings
+        \RequirePackage[
+            twoside=true,
+            bindingoffset=7mm,
+            top=0.5in,
+            bottom=0.75in,
+            includehead,
+            includefoot,
+            headsep=1.5\baselineskip,
+            headheight=2.5\baselineskip,
+            footskip=2\baselineskip,
+            marginratio=2:3,
+            width=4.1in,
+            height=6.75in
+        ]{geometry}
+    }
+    
+    \RequirePackage{scrlayer-scrpage}
+    \pagestyle{scrheadings}
+    \clearpairofpagestyles
+    \ohead{\@title}
+    \ihead{\theact.\thescene}
+    \ofoot{\pagemark}
+    
+    % TOC font setup - use document's main font AND custom chapter font for title
+    \addtokomafont{disposition}{\rmfamily}
+    \setkomafont{part}{\Large\rmfamily}
+    \setkomafont{chapter}{\large\rmfamily}
+    
+    \setkomafont{chapterentry}{\chapterfont\large}
+    \setkomafont{partentry}{\normalfont\Large}
+    
+    % Fix the actual TOC title (Contents)
+    \BeforeStartingTOC[toc]{\addtokomafont{chapterentrywithoutdots}{\chapterfont\Huge}}
+    
+    % Alternative approach - directly modify the TOC title command
+    \renewcommand*{\tableofcontents}{%
+        \@ifstar{\@tableofcontents}{\@tableofcontents}}
+    \newcommand*{\@tableofcontents}{%
+        \cleardoublepage
+        \thispagestyle{plain}%
+        {\centering\chapterfont\Huge\contentsname\par}%
+        \vspace{1.5\baselineskip}%
+        \@starttoc{toc}%
+    }
+    
+}{%
+    \RequirePackage{fancyhdr}
+    \RequirePackage{titlesec}
+    % Non-KOMA setup with same geometry settings
+    \@ifclasswith{scrbook}{a5paper}{%
+        % A5 paper geometry settings
+        \geometry{
+            twoside=true,
+            bindingoffset=7mm,
+            top=0.5in,
+            bottom=0.75in,
+            includehead,
+            includefoot,
+            headsep=1.5\baselineskip,
+            headheight=2.5\baselineskip,
+            footskip=2\baselineskip,
+            marginratio=2:3,
+            width=112mm,
+            height=175mm
+        }
+    }{%
+        % Other paper geometry settings
+        \geometry{
+            twoside=true,
+            bindingoffset=7mm,
+            top=0.5in,
+            bottom=0.75in,
+            includehead,
+            includefoot,
+            headsep=1.5\baselineskip,
+            headheight=2.5\baselineskip,
+            footskip=2\baselineskip,
+            marginratio=2:3,
+            width=4.1in,
+            height=6.75in
+        }
+    }
+}
+
+% Paper size dependent comment environments
+\@ifclasswith{scrbook}{a5paper}
+{%
+    \includecomment{a4}
+    \excludecomment{letter}
+	\newcommand{\headerwidth}{0.8\textwidth}
+}{%
+    \excludecomment{a4}
+    \includecomment{letter}
+	\newcommand{\headerwidth}{0.9\textwidth}
+}
+
+\makeatother
+
+\setdefaultlanguage[variant=uk]{english}
+\MakeAutoQuote{<}{>}
+
+% Counters for act and scene tracking
+\newcounter{actnum}
+\newcounter{scenenum}[actnum]
+\renewcommand{\theactnum}{\Roman{actnum}}
+\renewcommand{\thescenenum}{\arabic{scenenum}}
+\newcommand{\theact}{\theactnum}
+\newcommand{\thescene}{\thescenenum}
+
+% Basic lengths for speech formatting
+\newlength{\speakerspace}
+\newlength{\stagespace}
+\newlength{\textindent}
+\newlength{\songindent}
+\newlength{\refrainindent}
+\setlength{\speakerspace}{0.5\baselineskip}
+\setlength{\stagespace}{0.15\baselineskip plus 0.1\baselineskip minus 0.1\baselineskip}
+\setlength{\textindent}{2em}
+\setlength{\songindent}{2em}
+\setlength{\refrainindent}{4em}  % Additional indent for refrains
+
+% Act and Scene handling
+\newcommand{\setact}[1]{\setcounter{actnum}{#1}}
+\newcommand{\setscene}[1]{\setcounter{scenenum}{#1}}
+
+\newcommand{\printact}[1][]{%
+    \centerline{\Large\textsc{Act \theactnum}}%
+    \if\relax\detokenize{#1}\relax\else
+        \centerline{\large\textit{#1}}%
+    \fi
+    \bigskip
+}
+
+\newcommand{\printscene}[1][]{%
+    \thispagestyle{plain}%
+    \medskip
+    \needspace{6\baselineskip}% Ensure room for title + some content
+    \begingroup
+    \centerline{\Large\textsc\chapterfont{Act \theactnum}}%
+    \centerline{\large\textsc\chapterfont{Scene \thescenenum}}%
+    \if\relax\detokenize{#1}\relax\else
+        \centerline{\large\textit{#1}}%
+    \fi
+    \endgroup
+    \medskip
+}
+
+\NewDocumentCommand{\Act}{s m o}{%
+    \cleardoubleoddpage
+    \setact{#2}%
+    \thispagestyle{plain}%
+    \addtocontents{toc}{\protect\needspace{4\baselineskip}}%
+    \addcontentsline{toc}{part}{Act \theactnum}%
+    \IfBooleanF{#1}{\IfNoValueTF{#3}{\printact}{\printact[#3]}}%
+}
+
+\NewDocumentCommand{\Scene}{s m o}{%
+    \setscene{#2}%
+    \ifnum\value{scenenum}>1\relax
+        \cleardoubleoddpage
+    \fi
+    \thispagestyle{plain}%
+    \addcontentsline{toc}{chapter}{Scene \thescene\if\relax\detokenize{#3}\relax\else: #3\fi}%
+    \IfBooleanF{#1}{\IfNoValueTF{#3}{\printscene}{\printscene[#3]}}%
+}
+
+% KOMA-Script TOC formatting
+\RedeclareSectionCommand[
+    tocindent=0pt,
+    tocnumwidth=2em
+]{part}
+
+\RedeclareSectionCommand[
+    tocindent=2em,
+    tocnumwidth=2em
+]{chapter}
+
+\DeclareTOCStyleEntry[
+    beforeskip=2\baselineskip,
+    linefill=\TOCLineLeaderFill,
+    pagenumberformat=\bfseries,
+    numwidth=2em
+]{tocline}{part}
+
+\DeclareTOCStyleEntry[
+    beforeskip=0pt,
+    entryformat=\rmfamily,
+    linefill=\TOCLineLeaderFill,
+    pagenumberformat=\rmfamily,
+    numwidth=2em,
+    indent=2em
+]{tocline}{chapter}
+
+\setcounter{tocdepth}{0}
+
+% Single verse line with spacing to match environments
+\newcommand{\verseline}[2][]{%
+    \par\vspace{\speakerspace}%
+    \if\relax\detokenize{#1}\relax\else
+        \nobreak\penalty10000  % Prevent break after speaker
+        \centering\textsc{#1}\par
+        \nobreak\penalty10000  % Prevent break after speaker
+    \fi
+    \leftskip=\textindent
+    \parindent=0pt
+    \noindent#2\par
+}
+
+% Main verse speech environment
+\newenvironment{verse_speech}[1][]{%
+    \par
+    \needspace{3\baselineskip}% Speaker name + first line
+    \vspace{\speakerspace}%
+    \if\relax\detokenize{#1}\relax\else
+        \nobreak\penalty10000  % Prevent break after speaker
+        \centering\textsc{#1}\par
+        \nobreak\penalty10000  % Prevent break after speaker
+    \fi
+    \leftskip=\textindent
+    \parindent=0pt
+    \parfillskip=0pt plus1fil
+    \ignorespaces
+}{%
+    \par
+}
+
+% Prose speech environment
+\newenvironment{prose_speech}[1][]{%
+    \par
+    \needspace{3\baselineskip}% Speaker name + first line
+    \vspace{\speakerspace}%
+    \if\relax\detokenize{#1}\relax\else
+        \nobreak\penalty10000  % Prevent break after speaker
+        \centering\textsc{#1}\par
+        \nobreak\penalty10000  % Prevent break after speaker
+    \fi
+    \leftskip=\textindent
+    \parindent=0pt
+    \ignorespaces
+}{%
+    \par
+}
+
+% Aside handling with protected font
+\newcommand{\aside}[1]{%
+    \normalfont\textit{[Aside]}\space\textit{#1}%
+}
+
+\newcommand{\asideto}[2]{%
+    \normalfont\textit{[Aside to \textsc{#1}]}\space\textit{#2}%
+}
+
+% Stage directions aligned with text
+\newcommand{\stage}[1]{%
+    \ifvmode
+        \par
+    \else
+        \unskip
+        \par
+    \fi
+    \needspace{2\baselineskip}% Stage direction + following line
+    \vspace{\stagespace}%
+    \begingroup
+    \leftskip=\textindent
+    \rightskip=0pt plus 1fil
+    \noindent\textit{(#1)}%
+    \par
+    \endgroup
+    \ignorespaces%
+}
+
+% All stage directions use the same format
+\newcommand{\stagedir}[1]{\stage{#1}}
+
+% Entry/exit stage directions use the same format
+\DeclareRobustCommand{\enter}[1]{\goodbreak\stage{Enter #1}}
+\DeclareRobustCommand{\exit}[1]{\stage{Exit #1}\goodbreak}
+\DeclareRobustCommand{\exeunt}[1][]{\stage{Exeunt\if\relax\detokenize{#1}\relax\else\ #1\fi}}
+
+% Song-specific commands and environments
+\newcommand{\songtitle}[1]{%
+    \par
+    \needspace{4\baselineskip}% Title + first line
+    \vspace{\speakerspace}%
+    \centering\textit{#1}\par
+    \vspace{0.5\speakerspace}%
+}
+
+% Single song line with optional indentation level
+\newcommand{\songline}[2][0]{%
+    \par
+    \noindent\hspace*{\dimexpr\textindent + #1\songindent}\textit{#2}\par
+}
+
+% Refrain/chorus command with fixed indentation
+\newcommand{\refrain}[1]{%
+    \par
+    \begingroup
+    \leftskip=\refrainindent
+    \rightskip=\refrainindent
+    \noindent\textit{#1}\par
+    \endgroup
+}
+
+% Complete song environment
+\newenvironment{song}[1][]{%
+    \par\vspace{\speakerspace}%
+    \if\relax\detokenize{#1}\relax\else
+        \songtitle{#1}%
+    \fi
+    \begingroup
+    \leftskip=\textindent  % align with regular text
+    \parindent=0pt
+    \itshape
+    \ignorespaces
+}{%
+    \par
+    \endgroup
+    \vspace{\speakerspace}%
+}
+
+% Stanza environment for grouping song lines
+\newenvironment{stanza}{%
+    \par
+    \needspace{4\baselineskip}% Keep stanza together if possible
+    \addvspace{0.5\baselineskip}%
+}{%
+    \par
+    \addvspace{0.5\baselineskip}%
+}
+
+% Configuration commands
+\newcommand{\setspspace}[1]{\setlength{\speakerspace}{#1}}
+\newcommand{\setstagespace}[1]{\setlength{\stagespace}{#1}}
+\newcommand{\settextindent}[1]{\setlength{\textindent}{#1}}
+\newcommand{\setsongindent}[1]{\setlength{\songindent}{#1}}
+
+\endinput
