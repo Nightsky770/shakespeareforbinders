@@ -1,0 +1,196 @@
+
+\documentclass[
+%font=12pt,
+%paper=5.5in:8.5in,
+a5paper,
+]{scrbook} % Document font size and paper size
+\usepackage{bard}
+\usepackage{illustrations}
+\usepackage{pdfpages}
+
+
+\title{The Tempest}
+\author{William Shakespeare}
+
+
+\makeatletter
+\@ifundefined{ifpictures}{\newif\ifpictures}{}
+\makeatother
+\picturestrue
+%\picturesfalse
+
+
+\ifpictures
+    \includecomment{pictures}
+    \excludecomment{placeholder}
+\else
+    \excludecomment{pictures}
+    \includecomment{placeholder}
+\fi
+
+\begin{document}
+\renewfontfamily\chapterfont{DellaRespira-Regular.ttf}
+\frontmatter
+\begin{pictures}
+	\begin{letter}
+		\includepdf[width=1.1\textwidth]{images/cover.jpg}
+		\includepdf[width=1.1\textwidth]{images/endpaper2.jpg}
+		\includepdf[width=1.1\textwidth]{images/endpaper1.jpg}
+		\includepdf[width=1.1\textwidth]{images/arielbat.jpg}
+		\includepdf[width=1.1\textwidth]{images/archpage.jpg}
+		\includepdf[width=1.1\textwidth]{images/clovenpine.jpg}
+		\tableofcontents
+		\includepdf[width=.7\textwidth]{images/milan.jpg}
+		\includepdf[width=.8\textwidth]{images/naples.jpg}
+		\includepdf[width=1.1\textwidth]{images/dramper.jpg}
+	\end{letter}
+	\begin{a4}
+		\includepdf[width=\textwidth]{images/cover.jpg}
+		\includepdf[width=1.1\textwidth]{images/endpaper2.jpg}
+		\includepdf[width=1.1\textwidth]{images/endpaper1.jpg}
+		\includepdf[width=\textwidth]{images/arielbat.jpg}
+		\includepdf[width=\textwidth]{images/archpage.jpg}
+		\includepdf[width=\textwidth]{images/clovenpine.jpg}
+		\tableofcontents
+		\includepdf[width=.65\textwidth]{images/milan.jpg}
+		\includepdf[width=.75\textwidth]{images/naples.jpg}
+		\includepdf[width=\textwidth]{images/dramper.jpg}
+	\end{a4}
+\end{pictures}
+
+\begin{placeholder}
+\cleardoubleoddpage
+\end{placeholder}
+
+
+
+
+\mainmatter
+\KOMAoptions{headings=openright}
+
+\include{chapters/1i.tex}
+\include{chapters/1ii.tex}
+
+\begin{pictures}
+	\cleardoubleevenpage
+	\begin{letter}
+		\includepdf[width=1.1\textwidth]{images/act2left.jpg}
+		\includepdf[width=1.1\textwidth]{images/act2right.jpg}
+	\end{letter}
+	\begin{a4}
+		\includepdf[width=\textwidth]{images/act2left.jpg}
+		\includepdf[width=\textwidth]{images/act2right.jpg}
+	\end{a4}
+\end{pictures}
+\begin{placeholder}
+	\cleardoubleoddpage
+\end{placeholder}
+
+
+\include{chapters/2i.tex}
+\include{chapters/2ii.tex}
+
+
+\begin{pictures}
+	\cleardoubleevenpage
+	\begin{letter}
+	\includepdf[width=1.1\textwidth]{images/act3left.jpg}
+	\includepdf[width=1.1\textwidth]{images/act3right.jpg}
+	\end{letter}
+	\begin{a4}
+		\includepdf[width=\textwidth]{images/act3left.jpg}
+		\includepdf[width=\textwidth]{images/act3right.jpg}
+	\end{a4}
+\end{pictures}
+\begin{placeholder}
+	\cleardoubleoddpage
+\end{placeholder}
+
+\include{chapters/3i.tex}
+\include{chapters/3ii.tex}
+\include{chapters/3iii.tex}
+
+
+\begin{pictures}
+	\cleardoubleevenpage
+	\begin{letter}
+		\includepdf[width=1.1\textwidth]{images/act4left.jpg}
+		\includepdf[width=1.1\textwidth]{images/act4right.jpg}
+	\end{letter}
+	\begin{a4}
+		\includepdf[width=\textwidth]{images/act4left.jpg}
+		\includepdf[width=\textwidth]{images/act4right.jpg}
+	\end{a4}
+\end{pictures}
+\begin{placeholder}
+	\cleardoubleoddpage
+\end{placeholder}
+
+\include{chapters/4i.tex}
+
+\begin{pictures}
+	\cleardoubleevenpage
+	\begin{letter}
+		\includepdf[width=1.1\textwidth]{images/act5left.jpg}
+		\includepdf[width=1.1\textwidth]{images/act5right.jpg}
+	\end{letter}
+	\begin{a4}
+		\includepdf[width=\textwidth]{images/act5left.jpg}
+		\includepdf[width=\textwidth]{images/act5right.jpg}
+	\end{a4}
+\end{pictures}
+\begin{placeholder}
+	\cleardoubleoddpage
+\end{placeholder}
+
+\include{chapters/5i.tex}
+
+
+\begin{pictures}
+\cleardoubleoddpage
+\includepdf[width=1.1\textwidth]{images/theend.jpg}
+\end{pictures}
+
+\cleardoubleevenpage
+\RedeclareSectionCommand[afterskip=1cm,beforeskip=0cm]{chapter}
+\KOMAoptions{headings=openleft}
+%\chapter*{Colophon}
+%\setfontfamily\chapterfont{DellaRespira-Regular.ttf}
+\renewcommand\raggedsection{\centering} 
+\begin{tikzpicture}[remember picture, overlay]
+	\node (img) at ($(current page.north)-(0cm,5cm)$) {\includegraphics[width=.9\textwidth]{4iflowerlady}};
+\end{tikzpicture}
+\vspace*{14em}
+\centering
+\enlargethispage{\baselineskip}
+
+\begin{minipage}{\textwidth}
+\textit{The Tempest} was probably written in 1610 or 1611, not long before William Shakespeare (1564--1616) retired from the stage and returned to his native Stratford-upon-Avon. It was first published by William Jaggard in London, in 1623, as part of \textit{Mr. William Shakespeare's Comedies, Histories, \& Tragedies; Published according to the True and Original Copies}: the so-called <First Folio>.
+
+Illustrations by British artist Robert Anning Bell (1863--1933) are from a 1901 edition published in London (UK) by Freemantle \& Co. Grateful acknowledgement is made to the Folger Shakespeare Library in Washington D.C. (USA) for making available excellent-quality scans.
+\end{minipage}
+
+\vfill
+\rule{0.5\textwidth}{.4pt}
+\vfill
+\begin{minipage}{\textwidth}
+Text is set in <EB Garamond,> Georg Mayr-Duffner's free and open source implementation of Claude Garamond’s famous humanist typefaces from the mid-sixteenth century. 
+
+Chapter heads are set in <Della Respira,> by Nathan Willis, based on the 1913 American Type Founders font <Della Robbia.>
+\end{minipage}
+\vfill
+github.com/georgd/EB-Garamond\\www.glyphography.com/fonts/
+%\vfill
+%\rule{0.5\textwidth}{.4pt}
+%\vfill
+%\begin{minipage}{\textwidth}
+%This typeset is dedicated to the public domain under a Creative Commons CC0 1.0 Universal deed: creativecommons.org/publicdomain/zero/1.0/\\
+%\end{minipage}
+\vfill
+\rule{0.5\textwidth}{.4pt}
+\vfill
+Typeset in \LaTeX{}. Last revised \today.
+\vfill
+\thispagestyle{empty}
+
+\end{document}
