@@ -1,0 +1,473 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{bard}[2024/10/22 v2.0 Shakespeare play formatting based on bindery.sty]
+
+% All packages from bindery.sty
+\RequirePackage{xcolor}
+\RequirePackage[verbose]{polyglossia}
+\RequirePackage{fontspec}
+\RequirePackage[T1]{fontenc} % International character encodings
+\RequirePackage{makeidx}
+\RequirePackage{scrlayer-scrpage}
+\RequirePackage{pifont}
+\RequirePackage[maxlevel=3,autostyle]{csquotes}
+\RequirePackage[export]{adjustbox}
+\RequirePackage{afterpage}
+\RequirePackage{microtype}
+\RequirePackage{tocbasic}
+\RequirePackage[pass]{geometry}
+\RequirePackage{subfiles}
+\RequirePackage[all,defaultlines=2]{nowidow}
+\RequirePackage{setspaceenhanced}
+\RequirePackage[lining]{ebgaramond} 
+\RequirePackage{ellipsis}
+\RequirePackage{pdfpages}
+\RequirePackage{verse}
+\RequirePackage{epigraph}
+\RequirePackage{environ}
+\RequirePackage{etoolbox}
+\RequirePackage{soul}
+\RequirePackage{enumitem}
+\RequirePackage{needspace}
+\RequirePackage[shortcuts]{extdash} %Allows for auto-breaks at hyphens: Lud\-/in\-/the\-/Mist
+% Additional packages for bard functionality
+\RequirePackage{lettrine}
+\RequirePackage{xparse}
+\RequirePackage{calc}
+\RequirePackage{setspace}
+
+% KOMA options from bindery.sty
+\KOMAoption{BCOR}{7mm}
+\KOMAoption{twoside}{true}
+\KOMAoption{DIV}{calc}
+\KOMAoption{usegeometry}{true}
+\KOMAoption{chapterprefix}{true}
+\KOMAoption{headings}{big,optiontoheadandtoc}
+\KOMAoption{numbers}{noenddot}
+\KOMAoption{listof}{flat,nochaptergap,totoc}
+\KOMAoption{toc}{listof}
+
+% Option handling - simplified for bard
+\def\bard@chapterfont{\normalfont}
+
+\DeclareOption*{\PackageWarning{bard}{Unknown option '\CurrentOption'}}
+\ProcessOptions\relax
+
+\makeatletter
+
+% Paper size selection from bindery.sty
+\newif\ifafour
+\newif\ifletter
+\newcommand{\basicwidth}{\textwidth}
+\newcommand{\basicscale}{1.0}
+
+\@ifclasswith{scrbook}{a5paper}
+{%
+  \afourtrue
+  \letterfalse
+  	\newcommand{\headerwidth}{0.8\textwidth}
+	\newcommand{\smallwidth}{0.6\textwidth}
+}{%
+  \afourfalse
+  \lettertrue
+  \renewcommand{\basicwidth}{1.1\textwidth}
+  \renewcommand{\basicscale}{1.1} 
+  	\newcommand{\headerwidth}{\textwidth}
+	\newcommand{\smallwidth}{0.8\textwidth}
+}
+
+\NewEnviron{letter}{%
+    \ifletter
+        \normalfont
+        \BODY
+    \fi
+}
+
+\NewEnviron{a4}{%
+    \ifafour
+        \normalfont
+        \BODY
+    \fi
+}
+
+% At begin document setup from bindery.sty
+\AtBeginDocument{%
+  \setupheaders
+}
+
+% Font setup from bindery.sty
+\newcommand{\HUGE}{\fontsize{30}{30}\selectfont}
+
+\setmainfont{EBGaramond}[
+    Extension=.otf,
+    UprightFont=*-Regular,
+    ItalicFont=*-Italic,
+    BoldFont=*-Bold,
+    Numbers=Lining,
+    UprightFeatures={CharacterVariant=11}
+]
+
+\newfontfamily\chapterfont{EBGaramond}[
+    Extension=.otf,
+    UprightFont=*-Regular,
+    ItalicFont=*-Italic,
+    BoldFont=*-Bold,
+    Numbers=Lining,
+    UprightFeatures={CharacterVariant=11}
+]%Makes a good default. If needed, override in document with \renewfontfamily\chapterfont{whatever}
+
+%in case we need a sans font; Gillius is nice
+\setsansfont[
+Scale=MatchUppercase,
+UprightFont = *-Regular.otf,
+ItalicFont = *-Italic.otf
+]{GilliusADF}
+
+\setkomafont{chapter}{\bard@chapterfont\Huge\bfseries}
+\addtokomafont{disposition}{\normalfont}
+\defaultfontfeatures{Ligatures=TeX}
+
+% Language and misc setup from bindery.sty
+\setdefaultlanguage[variant=uk]{english}
+\newcommand*\hideentrynumber[1]{}
+\setlist[description]{font=\normalfont\bfseries}
+\graphicspath{ {./images/} }
+
+% Enhanced quotation and dash handling from bindery.sty
+\MakeAutoQuote{<}{>}
+\catcode`\—=13
+\protected\def—{\textemdash\allowbreak}
+\newcommand\longdash{\mbox{—\,}\ignorespaces{}}
+\newcommand\longdots{\mbox{\textellipsis\,}\ignorespaces{}}
+\newcommand\doubleemdash{⸺}
+
+\renewcommand*{\partformat}{\partname~\thepart}
+
+% Nice portable scene divider from bindery.sty
+\newcommand{\divider}{%
+  \par\vspace{0.5em plus 1em minus 0.25em}%
+  \noindent\hfil\rule{0.5\textwidth}{.4pt}\hfil%
+  \par\vspace{0.5em plus 1em minus 0.25em}%
+}
+
+\flushbottom
+
+% Epigraph setup from bindery.sty
+\setlength{\epigraphwidth}{0.8\textwidth}
+\renewcommand{\epigraphflush}{center}
+\renewcommand{\sourceflush}{center}
+
+% Chapter heads from bindery.sty
+\setkomafont{chapter}{\chapterfont\Huge}
+\newcommand{\resetchapskip}{\renewcommand*{\chapterheadstartvskip}{\vspace{\@tempskipa}}}
+\renewcommand\raggedsection{\centering}
+
+% Balanced chapter heading position
+\RedeclareSectionCommand[
+  beforeskip=2.0\baselineskip,
+  afterskip=1.5\baselineskip
+]{chapter}
+
+% Part heads from bindery.sty
+\patchcmd\@part
+  {\thepart\hspace{1em}}
+  {\HUGE\bfseries{\partname}\ \thepart\hspace{1em}}
+  {}{}
+
+% Simplified header setup for plays - always use play title and act/scene
+\automark{chapter}
+\def\bard@title{}
+\headsep=10pt
+\headheight=45pt
+\footskip=30pt
+
+\newcommand{\setupheaders}{%
+    \@ifundefined{@title}{%
+      \lehead{}%
+    }{%
+      \lehead{\@title}%
+    }%
+    % Always show act.scene in right header
+    \rohead{\theact.\thescene}
+}
+
+
+\newcommand{\headlesschapter}[1]{%
+  \begingroup
+  \let\@makechapterhead\@gobble
+  \chapter{#1}
+  \endgroup
+}
+
+% Counters for act and scene tracking
+\newcounter{actnum}
+\newcounter{scenenum}[actnum]
+\renewcommand{\theactnum}{\Roman{actnum}}
+\renewcommand{\thescenenum}{\arabic{scenenum}}
+\newcommand{\theact}{\theactnum}
+\newcommand{\thescene}{\thescenenum}
+
+% Basic lengths for speech formatting
+\newlength{\speakerspace}
+\newlength{\stagespace}
+\newlength{\textindent}
+\newlength{\songindent}
+\newlength{\refrainindent}
+\setlength{\speakerspace}{0.5\baselineskip}
+\setlength{\stagespace}{0.15\baselineskip plus 0.1\baselineskip minus 0.1\baselineskip}
+\setlength{\textindent}{2em}
+\setlength{\songindent}{2em}
+\setlength{\refrainindent}{4em}  % Additional indent for refrains
+
+% Act and Scene handling
+\newcommand{\setact}[1]{\setcounter{actnum}{#1}}
+\newcommand{\setscene}[1]{\setcounter{scenenum}{#1}}
+
+\newcommand{\printact}[1][]{%
+    \centerline{\Large\textsc{Act \theactnum}}%
+    \if\relax\detokenize{#1}\relax\else
+        \centerline{\large\textit{#1}}%
+    \fi
+    \bigskip
+}
+
+\newcommand{\printscene}[1][]{%
+    \thispagestyle{plain}%
+    \medskip
+    \needspace{6\baselineskip}% Ensure room for title + some content
+    \begingroup
+    \centerline{\Large\chapterfont{Act \theactnum}}%
+    \centerline{\large\chapterfont{Scene \thescenenum}}%
+    \if\relax\detokenize{#1}\relax\else
+        \centerline{\large\textit{#1}}%
+    \fi
+    \endgroup
+    \medskip
+}
+
+
+\NewDocumentCommand{\Act}{s m o}{%
+    % Only clear to odd page if we're not already positioned correctly
+    \ifodd\value{page}%
+        % We're on odd page, need to move to next odd page
+        \cleardoublepage
+    \else
+        % We're on even page, just move to next (odd) page
+        \clearpage
+    \fi
+    \setact{#2}%
+    \thispagestyle{plain}%
+    \addtocontents{toc}{\protect\needspace{4\baselineskip}}%
+    \addcontentsline{toc}{part}{Act \theactnum}%
+    \IfBooleanF{#1}{\IfNoValueTF{#3}{\printact}{\printact[#3]}}%
+}
+
+\NewDocumentCommand{\Scene}{s m o}{%
+    \setscene{#2}%
+    \ifnum\value{scenenum}>1\relax
+        % For scenes after the first, be smart about page clearing
+        \ifodd\value{page}%
+            % We're on odd page, need to move to next odd page
+            \cleardoublepage
+        \else
+            % We're on even page, just move to next (odd) page
+            \clearpage
+        \fi
+    \fi
+    \thispagestyle{plain}%
+    \addcontentsline{toc}{chapter}{Scene \thescene\if\relax\detokenize{#3}\relax\else: #3\fi}%
+    \IfBooleanF{#1}{\IfNoValueTF{#3}{\printscene}{\printscene[#3]}}%
+}
+
+% \NewDocumentCommand{\Act}{s m o}{%
+    % \cleardoublepage
+    % \setact{#2}%
+    % \thispagestyle{plain}%
+    % \addtocontents{toc}{\protect\needspace{4\baselineskip}}%
+    % \addcontentsline{toc}{part}{Act \theactnum}%
+    % \IfBooleanF{#1}{\IfNoValueTF{#3}{\printact}{\printact[#3]}}%
+% }
+
+% \NewDocumentCommand{\Scene}{s m o}{%
+    % \setscene{#2}%
+    % \ifnum\value{scenenum}>1\relax
+        % \cleardoublepage
+    % \fi
+    % \thispagestyle{plain}%
+    % \addcontentsline{toc}{chapter}{Scene \thescene\if\relax\detokenize{#3}\relax\else: #3\fi}%
+    % \IfBooleanF{#1}{\IfNoValueTF{#3}{\printscene}{\printscene[#3]}}%
+% }
+
+% KOMA-Script TOC formatting
+\RedeclareSectionCommand[
+    tocindent=0pt,
+    tocnumwidth=2em
+]{part}
+
+\RedeclareSectionCommand[
+    tocindent=2em,
+    tocnumwidth=2em
+]{chapter}
+
+\DeclareTOCStyleEntry[
+    beforeskip=2\baselineskip,
+    linefill=\TOCLineLeaderFill,
+    pagenumberformat=\bfseries,
+    numwidth=2em
+]{tocline}{part}
+
+\DeclareTOCStyleEntry[
+    beforeskip=0pt,
+    entryformat=\rmfamily,
+    linefill=\TOCLineLeaderFill,
+    pagenumberformat=\rmfamily,
+    numwidth=2em,
+    indent=2em
+]{tocline}{chapter}
+
+\setcounter{tocdepth}{0}
+
+% Single verse line with spacing to match environments
+\newcommand{\verseline}[2][]{%
+    \par\vspace{\speakerspace}%
+    \if\relax\detokenize{#1}\relax\else
+        \nobreak\penalty10000  % Prevent break after speaker
+        \centering\textsc{#1}\par
+        \nobreak\penalty10000  % Prevent break after speaker
+    \fi
+    \leftskip=\textindent
+    \parindent=0pt
+    \noindent#2\par
+}
+
+% Main verse speech environment
+\newenvironment{verse_speech}[1][]{%
+    \par
+    \needspace{3\baselineskip}% Speaker name + first line
+    \vspace{\speakerspace}%
+    \if\relax\detokenize{#1}\relax\else
+        \nobreak\penalty10000  % Prevent break after speaker
+        \centering\textsc{#1}\par
+        \nobreak\penalty10000  % Prevent break after speaker
+    \fi
+    \leftskip=\textindent
+    \parindent=0pt
+    \parfillskip=0pt plus1fil
+    \ignorespaces
+}{%
+    \par
+}
+
+% Prose speech environment
+\newenvironment{prose_speech}[1][]{%
+    \par
+    \needspace{3\baselineskip}% Speaker name + first line
+    \vspace{\speakerspace}%
+    \if\relax\detokenize{#1}\relax\else
+        \nobreak\penalty10000  % Prevent break after speaker
+        \centering\textsc{#1}\par
+        \nobreak\penalty10000  % Prevent break after speaker
+    \fi
+    \leftskip=\textindent
+    \parindent=0pt
+    \ignorespaces
+}{%
+    \par
+}
+
+% Aside handling with protected font
+\newcommand{\aside}[1]{%
+    \normalfont\textit{[Aside]}\space\textit{#1}%
+}
+
+\newcommand{\asideto}[2]{%
+    \normalfont\textit{[Aside to \textsc{#1}]}\space\textit{#2}%
+}
+
+% Stage directions aligned with text
+\newcommand{\stage}[1]{%
+    \ifvmode
+        \par
+    \else
+        \unskip
+        \par
+    \fi
+    \needspace{2\baselineskip}% Stage direction + following line
+    \vspace{\stagespace}%
+    \begingroup
+    \leftskip=\textindent
+    \rightskip=0pt plus 1fil
+    \noindent\textit{(#1)}%
+    \par
+    \endgroup
+    \ignorespaces%
+}
+
+% All stage directions use the same format
+\newcommand{\stagedir}[1]{\stage{#1}}
+
+% Entry/exit stage directions use the same format
+\DeclareRobustCommand{\enter}[1]{\goodbreak\stage{Enter #1}}
+\DeclareRobustCommand{\exit}[1]{\stage{Exit #1}\goodbreak}
+\DeclareRobustCommand{\exeunt}[1][]{\stage{Exeunt\if\relax\detokenize{#1}\relax\else\ #1\fi}}
+
+% Song-specific commands and environments
+\newcommand{\songtitle}[1]{%
+    \par
+    \needspace{4\baselineskip}% Title + first line
+    \vspace{\speakerspace}%
+    \centering\textit{#1}\par
+    \vspace{0.5\speakerspace}%
+}
+
+% Single song line with optional indentation level
+\newcommand{\songline}[2][0]{%
+    \par
+    \noindent\hspace*{\dimexpr\textindent + #1\songindent}\textit{#2}\par
+}
+
+% Refrain/chorus command with fixed indentation
+\newcommand{\refrain}[1]{%
+    \par
+    \begingroup
+    \leftskip=\refrainindent
+    \rightskip=\refrainindent
+    \noindent\textit{#1}\par
+    \endgroup
+}
+
+% Complete song environment
+\newenvironment{song}[1][]{%
+    \par\vspace{\speakerspace}%
+    \if\relax\detokenize{#1}\relax\else
+        \songtitle{#1}%
+    \fi
+    \begingroup
+    \leftskip=\textindent  % align with regular text
+    \parindent=0pt
+    \itshape
+    \ignorespaces
+}{%
+    \par
+    \endgroup
+    \vspace{\speakerspace}%
+}
+
+% Stanza environment for grouping song lines
+\newenvironment{stanza}{%
+    \par
+    \needspace{4\baselineskip}% Keep stanza together if possible
+    \addvspace{0.5\baselineskip}%
+}{%
+    \par
+    \addvspace{0.5\baselineskip}%
+}
+
+% Configuration commands
+\newcommand{\setspspace}[1]{\setlength{\speakerspace}{#1}}
+\newcommand{\setstagespace}[1]{\setlength{\stagespace}{#1}}
+\newcommand{\settextindent}[1]{\setlength{\textindent}{#1}}
+\newcommand{\setsongindent}[1]{\setlength{\songindent}{#1}}
+
+\makeatother
+
+\endinput

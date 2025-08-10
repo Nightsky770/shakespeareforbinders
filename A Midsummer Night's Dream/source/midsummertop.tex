@@ -1,0 +1,88 @@
+\documentclass[
+paper=5.5in:8.5in,
+%a5paper,
+]{scrbook} % Document font size and paper size
+
+\title{A Midsummer Night's Dream}
+
+
+\usepackage{bard}
+\usepackage{illustrations}
+\usepackage{pdfpages}
+
+\DeclareTOCStyleEntry[beforeskip=.5em,entryformat=\bfseries]{part}{part}
+
+\begin{document}
+\frontmatter
+ \includepdf[width=\basicwidth]{titlepage.jpg}
+
+\pagestyle{plain}
+\KOMAoptions{headings=openany}
+\includepdf[width=\basicwidth,pagecommand={\thispagestyle{plain}}]{dramper.jpg}
+\renewcommand*{\chapterheadstartvskip}{\vspace{0pt}} %scootch up TOC header
+\imagetoc{contents}{0.7}
+\tableofcontents
+\KOMAoptions{headings=openany}
+\cleardoubleoddpage
+
+%\includepdf[addtotoc={1,chapter,0,{Dramatis Person\ae},},width=\basicwidth]{dramper.jpg}
+
+
+
+
+%\KOMAoptions{headings=openleft}
+%\imagelof{illus}{List of Illustrations}{0.7}
+%\listoffigures
+ 
+\mainmatter
+\KOMAoptions{headings=openright}
+\pagestyle{headings}
+
+
+\include{chapters/1i.tex}
+\include{chapters/1ii.tex}
+\include{chapters/2i.tex}
+\include{chapters/2ii.tex}
+\include{chapters/3i.tex}
+\include{chapters/3ii.tex}
+\include{chapters/4i.tex}
+\include{chapters/4ii.tex}
+\include{chapters/5i.tex}
+
+
+
+\renewcommand*{\chapterheadendvskip}{\vfill}
+\renewcommand*{\chapterheadstartvskip}{\vfill}
+
+\KOMAoptions{headings=openleft}
+
+\centerline{\includegraphics[width=.7\linewidth]{colophon}}
+
+\centering
+
+\vfill
+\begin{minipage}{\textwidth}
+\textit{A Midsummer Night's Dream} was first performed in 1595 or 1596, after William Shakespeare (1564--1616) had written \textit{Romeo and Juliet} and probably just before \textit{The Merchant of Venice.} It was first published in 1600 (the <first quarto> edition) by William Jaggard, in London (UK).
+
+Illustrations by British artist Arthur Rackham (1867--1939) are from a 1908 edition published by Heinemann in London (UK) and Doubleday in New York (US). Grateful acknowledgement is made to the Internet Archive, which in 2007 digitised a copy of this edition belonging to the New York Public Library. Additional illustrations are taken from various other Rackham works.
+\end{minipage}
+\vfill
+gutenberg.org/ebooks/1514\\archive.org/details/midsummernightsd00shak
+\vfill
+\rule{0.5\textwidth}{.4pt}
+\vfill
+\begin{minipage}{\textwidth}
+Text is set in <EB Garamond,> Georg Mayr-Duffner's free and open source implementation of Claude Garamond’s famous humanist typefaces from the mid-sixteenth century. github.com/georgd/EB-Garamond
+\end{minipage}
+\vfill
+\rule{0.5\textwidth}{.4pt}
+\vfill
+\begin{minipage}{\textwidth}
+This typeset is dedicated to the public domain under a Creative Commons CC0 1.0 Universal deed: creativecommons.org/publicdomain/zero/1.0/
+\end{minipage}
+\vfill
+\rule{0.5\textwidth}{.4pt}
+\vfill
+Typeset in \LaTeX{}. Last revised \today.
+\thispagestyle{empty}
+\end{document}
