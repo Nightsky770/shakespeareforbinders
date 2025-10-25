@@ -12,19 +12,7 @@ a5paper,
 \author{William Shakespeare}
 \renewfontfamily\chapterfont{DellaRespira-Regular.ttf}
 
-\makeatletter
-\@ifundefined{ifpictures}{\newif\ifpictures}{}
-\makeatother
-\picturestrue
-%\picturesfalse
 
-\ifpictures
-    \includecomment{pictures}
-    \excludecomment{placeholder}
-\else
-    \excludecomment{pictures}
-    \includecomment{placeholder}
-\fi
 
 \def\topedgesink{-1.5cm}
 \def\textsink{5cm}
@@ -33,10 +21,10 @@ a5paper,
 
 \begin{document}
 \frontmatter
-\begin{pictures}
-	\includepdf[width=1.1\textwidth]{images/titlepage.jpg}
-	\includepdf[width=1.1\textwidth]{images/drampat.jpg}
-\end{pictures}
+
+	\includepdf[width=\basicwidth]{images/titlepage.jpg}
+	\includepdf[addtotoc={1,chapter,0,{Dramatis Person\ae},},width=\basicwidth]{images/drampat.jpg}
+
 \tableofcontents
 
 \mainmatter
@@ -61,7 +49,7 @@ a5paper,
 \begin{tikzpicture}[remember picture, overlay]
 	\node (img) at ($(current page.north)-(0cm,3.5cm)$) {\includegraphics[width=.6\textwidth]{colophon}};
 \end{tikzpicture}
-\vspace*{8em}
+\vspace*{12em}
 \centering
 
 \begin{minipage}{\textwidth}

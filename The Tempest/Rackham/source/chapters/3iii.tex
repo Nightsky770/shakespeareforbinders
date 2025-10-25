@@ -1,4 +1,3 @@
-%!TeX root=../tempestrackham.tex
 \Scene*{3}[Another part of the island.]
 
 
@@ -12,6 +11,7 @@
 
 
 \enter{\textsc{Alonso}, \textsc{Sebastian}, \textsc{Antonio}, \textsc{Gonzalo}, \textsc{Adrian}, \textsc{Francisco}, and others}
+
 
 \begin{verse_speech}[Gonzalo] 
 By'r lakin, I can go no further, sir;\\
@@ -29,6 +29,13 @@ No longer for my flatterer: he is drown'd\\
 Whom thus we stray to find, and the sea mocks\\
 Our frustrate search on land. Well, let him go.
 \end{verse_speech}
+
+
+\begin{figure}[tb]
+	\centering
+	\includegraphics[width=.3\textwidth]{harpy}
+\end{figure}
+
 
 \begin{verse_speech}[Antonio] 
 \asideto{Sebastian}{I am right glad that he's so out of hope.\\
@@ -62,22 +69,11 @@ As when they are fresh.}
 \verseline[Alonso]{Give us kind keepers, heavens! What were these?}
 
 
-\begin{pictures} % banquet
-	\begin{letter}
-		\begin{colorbigpic}
-			[1.1]
-			{3iii_banquet}
-			{\textit{Enter several strange Shapes, bringing in a banquet}}
-		\end{colorbigpic}
-	\end{letter}
-	\begin{a4}
-		\begin{colorbigpic}
-			[1]
-			{3iii_banquet}
-			{\textit{Enter several strange Shapes, bringing in a banquet}}
-		\end{colorbigpic}
-	\end{a4}
-\end{pictures}
+\begin{colorbigpic} % banquet
+	[\basicscale]
+	{3iii_banquet}
+	[\textit{Enter several strange Shapes, bringing in a banquet}]
+\end{colorbigpic}
 
 \begin{verse_speech}[Sebastian] 
 A living drollery. Now I will believe\\
@@ -246,15 +242,3 @@ May now provoke them to.
 \verseline[Adrian]{\hspace{\widthof{May now provoke them to.}}Follow, I pray you.}
 
 \exeunt{}
-
-\begin{letter}
-	\begin{tikzpicture}[remember picture, overlay]
-		\node (img) at ($(current page.south)+(0cm,7cm)$) {\includegraphics[width=.3\textwidth]{harpy}};
-	\end{tikzpicture}
-\end{letter}
-
-\begin{a4}
-	\begin{tikzpicture}[remember picture, overlay]
-		\node (img) at ($(current page.south)+(0cm,4cm)$) {\includegraphics[width=.3\textwidth]{harpy}};
-	\end{tikzpicture}
-\end{a4}
