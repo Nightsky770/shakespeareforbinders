@@ -9,24 +9,17 @@
 
 \enter{\textsc{Prospero}, \textsc{Ferdinand}, and \textsc{Miranda}}
 
-\begin{letter} %dropcap
+\begin{letter} %dropcap & first speech
 	\begin{tikzpicture}[remember picture, overlay]
-		\node (dropcap) at ($(current page.west)+(3cm,-3cm)$) {\includegraphics[width=0.125\linewidth]{4idropcapI}};
+		\node (dropcap) at ($(current page.west)+(2.75cm,-2.25cm)$) {\includegraphics[width=0.125\linewidth]{4idropcapI}};
 	\end{tikzpicture}
-\end{letter}
 
-\begin{a4} %dropcap
-	\begin{tikzpicture}[remember picture, overlay]
-		\node (dropcap) at ($(current page.west)+(3cm,-2.75cm)$) {\includegraphics[width=0.125\linewidth]{4idropcapI}};
-	\end{tikzpicture}
-\end{a4}
-
-\begin{verse_speech}[Prospero] 
-\hspace{2em} f I have too austerely punish'd you,\\
-\hspace{2.5em} Your compensation makes amends, for I\\
-\hspace{2.5em} Have given you here a third of mine own life,\\
-\hspace{2.5em} Or that for which I live; who once again\\
-\hspace{2.5em} I tender to thy hand: all thy vexations\\
+	\begin{verse_speech}[Prospero] 
+	\hspace{2em} f I have too austerely punish'd you,\\
+	\hspace{2.5em} Your compensation makes amends, for I\\
+	\hspace{2.5em} Have given you here a third of mine own life,\\
+	\hspace{2.8em} Or that for which I live; who once again\\
+	\hspace{2.5em} I tender to thy hand: all thy vexations\\
 Were but my trials of thy love and thou\\
 Hast strangely stood the test here, afore Heaven,\\
 I ratify this my rich gift. O Ferdinand,\\
@@ -34,6 +27,29 @@ Do not smile at me that I boast her off,\\
 For thou shalt find she will outstrip all praise\\
 And make it halt behind her.
 \end{verse_speech}
+\end{letter}
+
+\begin{a4} %dropcap & first speech
+	\begin{tikzpicture}[remember picture, overlay]
+		\node (dropcap) at ($(current page.west)+(2.8cm,-2cm)$) {\includegraphics[width=0.125\linewidth]{4idropcapI}};
+	\end{tikzpicture}
+	\vspace*{2em} %scootch Prospero's speech down a tad
+	\begin{verse_speech}[Prospero] 
+\hspace{2em} f I have too austerely punish'd you,\\
+\hspace{2.5em} Your compensation makes amends, for I\\
+\hspace{3em} Have given you here a third of mine own life,\\
+\hspace{2.5em} Or that for which I live; who once again\\
+I tender to thy hand: all thy vexations\\
+Were but my trials of thy love and thou\\
+Hast strangely stood the test here, afore Heaven,\\
+I ratify this my rich gift. O Ferdinand,\\
+Do not smile at me that I boast her off,\\
+For thou shalt find she will outstrip all praise\\
+And make it halt behind her.
+\end{verse_speech}
+\end{a4}
+
+
 
 \begin{verse_speech}[Ferdinand] 
 \hspace{\widthof{And make it halt behind her.}}I do believe it\\
@@ -101,11 +117,6 @@ And they expect it from me.
 \end{song}
 \end{verse_speech}
 
-% \begin{figure}[tb]
-% \centering
-% \includegraphics[width=.8\textwidth]{4iflowerlady}
-% \end{figure}
-
 \begin{verse_speech}[Prospero] 
 Dearly my delicate Ariel. Do not approach\\
 Till thou dost hear me call.
@@ -135,11 +146,7 @@ Rather than want a spirit: appear and pertly!\\
 No tongue! all eyes! be silent.
 \end{verse_speech}
 
-	\begin{bwbigpic}
-		[\picwidth]
-		{4imasqueleft}
-		{}
-	\end{bwbigpic}
+
 
 \stage{Soft music. Enter \textsc{Iris}.}
 
@@ -175,12 +182,19 @@ Rich scarf to my proud earth; why hath thy queen\\
 Summon'd me hither, to this short-grass'd green?
 \end{verse_speech}
 
+	% \begin{bwbigpic}
+		% [\basicscale]
+		% {4imasqueleft}
+		% {}
+	% \end{bwbigpic}
+	
+	% \begin{bwbigpic}
+		% [\basicscale]
+		% {4imasqueright}
+		% {}
+	% \end{bwbigpic}
 
-	\begin{bwbigpic}
-		[\picwidth]
-		{4imasqueright}
-		{}
-	\end{bwbigpic}
+
 
 
 
@@ -215,6 +229,7 @@ And be a boy right out.
 \end{verse_speech}
 
 
+
 \begin{verse_speech}[Ceres] 
 \hspace{\widthof{And be a boy right out.}}High'st queen of state,\\
 Great Juno, comes; I know her by her gait.
@@ -222,13 +237,24 @@ Great Juno, comes; I know her by her gait.
 
 \enter{\textsc{Juno}}
 
+\begin{a4}
+\includepdf[width=\basicwidth]{images/4imasqueleft.jpg}
+\includepdf[width=\basicwidth]{images/4imasqueright.jpg}
+\end{a4}
+
 \begin{verse_speech}[Juno] 
 How does my bounteous sister? Go with me\\
 To bless this twain, that they may prosperous be\\
 And honour'd in their issue.
 \end{verse_speech}
 
+
 \stage{They sing:}
+
+\begin{letter}
+\includepdf[width=\basicwidth]{images/4imasqueleft.jpg}
+\includepdf[width=\basicwidth]{images/4imasqueright.jpg}
+\end{letter}
 
 \begin{verse_speech}[Juno]
 	\begin{song}
@@ -404,7 +430,7 @@ Come, hang them on this line.
 \end{verse_speech}
 
 	\begin{bwbigpic}
-		[\picwidth]
+		[\basicscale]
 		{4iwashing}
 		{}
 	\end{bwbigpic}
@@ -529,7 +555,5 @@ Follow, and do me service.
 
 \vfill
 
-\begin{center}
-	\includegraphics[width=.4\textwidth]{3iitailpiece}
+	\centerline{\includegraphics[width=.4\textwidth]{3iitailpiece}}
 
-\end{center}

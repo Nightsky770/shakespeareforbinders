@@ -10,20 +10,30 @@
 	
 \begin{letter} %dropcap
 	\begin{tikzpicture}[remember picture, overlay]
-		\node (dropcap) at ($(current page.west)+(3cm,-6.5cm)$) {\includegraphics[width=0.125\linewidth]{5idropcapN}};
+		\node (dropcap) at ($(current page.west)+(2.8cm,-5.5cm)$) {\includegraphics[width=0.125\linewidth]{5idropcapN}};
 	\end{tikzpicture}
-\end{letter}
-\begin{a4} %dropcap
-	\begin{tikzpicture}[remember picture, overlay]
-		\node (dropcap) at ($(current page.west)+(3cm,-5.5cm)$) {\includegraphics[width=0.125\linewidth]{5idropcapN}};
-	\end{tikzpicture}
-\end{a4}
-
-\begin{verse_speech}[Prospero] 
+	
+	\begin{verse_speech}[Prospero] 
 \hspace{2.8em} ow does my project gather to a head:\\
 \hspace{3em} My charms crack not; my spirits obey; and time\\
 Goes upright with his carriage. How's the day?
 \end{verse_speech}
+
+\end{letter}
+\begin{a4} %dropcap
+	\begin{tikzpicture}[remember picture, overlay]
+		\node (dropcap) at ($(current page.west)+(3cm,-3.9cm)$) {\includegraphics[width=0.125\linewidth]{5idropcapN}};
+	\end{tikzpicture}
+	
+	\begin{verse_speech}[Prospero] 
+\hspace{3em} ow does my project gather to a head:\\
+My charms crack not; my spirits obey; and time\\
+Goes upright with his carriage. How's the day?
+\end{verse_speech}
+
+\end{a4}
+
+
 
 \begin{verse_speech}[Ariel] 
 On the sixth hour; at which time, my lord,\\
@@ -144,10 +154,19 @@ That now lies foul and muddy. Not one of them\\
 That yet looks on me, or would know me Ariel,\\
 Fetch me the hat and rapier in my cell.\\
 
+% \begin{letter}
 \begin{figure}[tb]
 \centering
 \includegraphics[width=.5\textwidth]{5iplants}
 \end{figure}
+% \end{letter}
+
+% \begin{a4}
+% \begin{figure}[tb]
+% \centering
+% \includegraphics[width=.4\textwidth]{5iplants}
+% \end{figure}
+% \end{a4}
 
 \stage{\textsc{Ariel} exits and at once returns with \textsc{Prospero’s} ducal robes.}
 
@@ -321,7 +340,7 @@ As much as me my dukedom.
 
 
 \begin{bwbigpic}
-	[\picwidth]
+	[\basicscale]
 	{5ichess}
 	{}
 \end{bwbigpic}
@@ -373,6 +392,20 @@ That has such people in't!
 \end{verse_speech}
 
 \verseline[Prospero]{\hspace{\widthof{}}'Tis new to thee.}
+
+\begin{letter}
+\begin{figure}[bt]
+\centering
+\includegraphics[width=.6\textwidth]{tree}
+\end{figure}
+\end{letter}
+
+\begin{a4}
+\begin{figure}[bt]
+\centering
+\includegraphics[width=.3\textwidth]{tree}
+\end{figure}
+\end{a4}
 
 \begin{verse_speech}[Alonso] 
 \textit{(To \textsc{Ferdinand})} What is this maid with whom thou wast at play?\\
@@ -509,7 +542,7 @@ Some few odd lads that you remember not.
 \end{verse_speech}
 
 \begin{bwbigpic}
-	[\picwidth]
+	[\basicscale]
 	{5istolen}
 	{}
 \end{bwbigpic}
