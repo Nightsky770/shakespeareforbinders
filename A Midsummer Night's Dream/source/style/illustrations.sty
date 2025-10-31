@@ -28,7 +28,8 @@
   \cleardoublepage
   \chapter*{\listfigurename}%
   \@mkboth{\listfigurename}{\listfigurename}%
-  \addcontentsline{toc}{chapter}{\protect\numberline{}{\listfigurename}}%
+%  \addcontentsline{toc}{chapter}{\protect\numberline{}{\listfigurename}}%
+\addcontentsline{toc}{chapter}{\listfigurename}%
   \pagestyle{plain}%
   \@starttoc{lof}%
   \thispagestyle{plain}%
@@ -66,7 +67,7 @@
 
 \DeclareTOCStyleEntry[
   linefill=\TOCLineLeaderFill,
-  indent=0pt,
+  indent=1em,
   beforeskip=0.5em,
   entrynumberformat=\hideentrynumber
 ]{tocline}{figure}

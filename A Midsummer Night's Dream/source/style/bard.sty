@@ -132,6 +132,15 @@ ItalicFont = *-Italic.otf
 \setlist[description]{font=\normalfont\bfseries}
 \graphicspath{ {./images/} }
 
+% TOC font setup - use document's main font AND custom chapter font for title
+\addtokomafont{disposition}{\rmfamily}
+\setkomafont{part}{\Large\rmfamily}
+\setkomafont{chapter}{\large\rmfamily}
+
+\setkomafont{chapterentry}{\chapterfont\large}
+\setkomafont{partentry}{\normalfont\Large}
+
+
 % Enhanced quotation and dash handling from bindery.sty
 \MakeAutoQuote{<}{>}
 \catcode`\—=13
@@ -246,14 +255,7 @@ ItalicFont = *-Italic.otf
 
 
 \NewDocumentCommand{\Act}{s m o}{%
-    % Only clear to odd page if we're not already positioned correctly
-    \ifodd\value{page}%
-        % We're on odd page, need to move to next odd page
-        \cleardoublepage
-    \else
-        % We're on even page, just move to next (odd) page
-        \clearpage
-    \fi
+	\cleardoubleoddpage
     \setact{#2}%
     \thispagestyle{plain}%
     \addtocontents{toc}{\protect\needspace{4\baselineskip}}%
@@ -264,14 +266,7 @@ ItalicFont = *-Italic.otf
 \NewDocumentCommand{\Scene}{s m o}{%
     \setscene{#2}%
     \ifnum\value{scenenum}>1\relax
-        % For scenes after the first, be smart about page clearing
-        \ifodd\value{page}%
-            % We're on odd page, need to move to next odd page
-            \cleardoublepage
-        \else
-            % We're on even page, just move to next (odd) page
-            \clearpage
-        \fi
+		\cleardoubleoddpage
     \fi
     \thispagestyle{plain}%
     \addcontentsline{toc}{chapter}{Scene \thescene\if\relax\detokenize{#3}\relax\else: #3\fi}%
