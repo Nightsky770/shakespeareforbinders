@@ -1,0 +1,115 @@
+\documentclass[
+paper=5.5in:8.5in,
+%a5paper,
+]{scrbook} % Document font size and paper size
+
+\title{As You Like It}
+
+
+\usepackage{bard}
+\usepackage{illustrations}
+\usepackage{pdfpages}
+\NewHook{cmd/@startsection/before} %workaround for a MiKTeX issue (https://github.com/MiKTeX/miktex-packaging/issues/492) 
+
+\DeclareTOCStyleEntry[beforeskip=.4em]{part}{part}
+
+\begin{document}
+\frontmatter
+ \includepdf[width=\basicwidth]{titlepage.jpg}
+
+\pagestyle{plain}
+\KOMAoptions{headings=openleft}
+%\includepdf[width=\basicwidth,pagecommand={\thispagestyle{plain}}]{dramper.jpg}
+\renewcommand*{\chapterheadstartvskip}{\vspace{0pt}} %scootch up TOC header
+\imagetoc{contents}{0.5}
+\tableofcontents
+%\KOMAoptions{headings=openany}
+%\cleardoubleoddpage
+
+%\includepdf[addtotoc={1,chapter,0,{Dramatis Person\ae},},width=\basicwidth]{dramper.jpg}
+\include{chapters/dramper.tex}
+
+
+
+%\KOMAoptions{headings=openleft}
+%\imagelof{illus}{List of Illustrations}{0.7}
+%\listoffigures
+ 
+\mainmatter
+\KOMAoptions{headings=openright}
+\pagestyle{headings}
+
+\includepdf[width=\basicwidth,pagecommand={\Act*{1}\thispagestyle{plain}}]{act1head.jpg}
+\include{chapters/1i.tex}
+\include{chapters/1ii.tex}
+\include{chapters/1iii.tex}
+\includepdf[width=\basicwidth,pagecommand={\Act*{2}\thispagestyle{plain}}]{act2head.jpg}
+\include{chapters/2i.tex}
+\include{chapters/2ii.tex}
+\include{chapters/2iii.tex}
+\include{chapters/2iv.tex}
+\include{chapters/2v.tex}
+\include{chapters/2vi.tex}
+\include{chapters/2vii.tex}
+\cleardoubleoddpage
+\includepdf[width=\basicwidth,pagecommand={\Act*{3}\thispagestyle{plain}}]{act3head.jpg}
+\include{chapters/3i.tex}
+\include{chapters/3ii.tex}
+\include{chapters/3iii.tex}
+\include{chapters/3iv.tex}
+\include{chapters/3v.tex}
+\cleardoubleoddpage
+\includepdf[width=\basicwidth,pagecommand={\Act*{4}\thispagestyle{plain}}]{act4head.jpg}
+\include{chapters/4i.tex}
+\include{chapters/4ii.tex}
+\include{chapters/4iii.tex}
+\cleardoubleoddpage
+\includepdf[width=\basicwidth,pagecommand={\Act*{5}\thispagestyle{plain}}]{act5head.jpg}
+\include{chapters/5i.tex}
+\include{chapters/5ii.tex}
+\include{chapters/5iii.tex}
+\include{chapters/5iv.tex}
+
+
+
+\renewcommand*{\chapterheadendvskip}{\vfill}
+\renewcommand*{\chapterheadstartvskip}{\vfill}
+
+\KOMAoptions{headings=openleft}
+
+ \begin{figure}[t]
+	 \centering
+	 \includegraphics[width=0.5\textwidth]{colophon}
+ \end{figure}
+
+\centering
+
+\vfill
+\begin{minipage}{\textwidth}
+Based on extant records and intertextual evidence, William Shakespeare (1564--1616) most likely wrote \textit{As You Like It}  between 1598 and 1600. It was first published by William Jaggard in London, in 1623, as part of \textit{Mr. William Shakespeare's Comedies, Histories, \& Tragedies; Published according to the True and Original Copies}: the <First Folio>.
+
+Illustrations by Hugh Thomson (1860--1920) are from a 1902 edition published by Hodder \& Stoughton in London (UK). Grataeful acknowledgement is made to the Internet Archive, which in 2008 digitised a copy of this edition belonging to the University of California library system.
+\end{minipage}
+\vfill
+gutenberg.org/ebooks/1523\\archive.org/details/thomsonasyoulike00shakrich
+\vfill
+\rule{0.5\textwidth}{.4pt}
+\vfill
+\begin{minipage}{\textwidth}
+Text is set in <EB Garamond,> Georg Mayr-Duffner's free and open source implementation of Claude Garamond’s famous humanist typefaces from the mid-sixteenth century. Chapter heads are set in <Amarante,> by Karolina Lach.
+\end{minipage}
+\vfill
+github.com/georgd/EB-Garamond\\karolinalach.com
+
+\vfill
+\rule{0.5\textwidth}{.4pt}
+\vfill
+\begin{minipage}{\textwidth}
+This typeset is dedicated to the public domain under a Creative Commons CC0 1.0 Universal deed: creativecommons.org/publicdomain/zero/1.0/
+\end{minipage}
+\vfill
+\rule{0.5\textwidth}{.4pt}
+\vfill
+Typeset in \LaTeX{}. Last revised \today.
+\thispagestyle{empty}
+\end{document}
