@@ -132,6 +132,10 @@ ItalicFont = *-Italic.otf
 \setlist[description]{font=\normalfont\bfseries}
 \graphicspath{ {./images/} }
 
+%% enumitem setup for lists of characters
+\setlist{wide,nosep,style=unboxed}
+\addtokomafont{descriptionlabel}{\normalfont\scshape}
+
 % TOC font setup - use document's main font AND custom chapter font for title
 \addtokomafont{disposition}{\rmfamily}
 \setkomafont{part}{\Large\rmfamily}
@@ -219,12 +223,10 @@ ItalicFont = *-Italic.otf
 \newlength{\speakerspace}
 \newlength{\stagespace}
 \newlength{\textindent}
-\newlength{\songindent}
 \newlength{\refrainindent}
 \setlength{\speakerspace}{0.5\baselineskip}
 \setlength{\stagespace}{0.15\baselineskip plus 0.1\baselineskip minus 0.1\baselineskip}
 \setlength{\textindent}{2em}
-\setlength{\songindent}{2em}
 \setlength{\refrainindent}{4em}  % Additional indent for refrains
 
 % Act and Scene handling
@@ -240,14 +242,16 @@ ItalicFont = *-Italic.otf
 }
 
 \newcommand{\printscene}[1][]{%
-    \thispagestyle{plain}%
-    \medskip
+	\thispagestyle{plain}%
+    % \medskip
+	\vspace*{2\baselineskip}
     \needspace{6\baselineskip}% Ensure room for title + some content
     \begingroup
-    \centerline{\Large\chapterfont{Act \theactnum}}%
-    \centerline{\large\chapterfont{Scene \thescenenum}}%
+%    \centerline{\Large\chapterfont{Act \theactnum}}%
+    \centerline{\Large\chapterfont{Scene \thescenenum}}%
     \if\relax\detokenize{#1}\relax\else
-        \centerline{\large\textit{#1}}%
+        \smallskip
+		\centerline{\large\textit{#1}}%
     \fi
     \endgroup
     \medskip
@@ -265,32 +269,14 @@ ItalicFont = *-Italic.otf
 
 \NewDocumentCommand{\Scene}{s m o}{%
     \setscene{#2}%
-    \ifnum\value{scenenum}>1\relax
+ %   \ifnum\value{scenenum}>1\relax
 		\cleardoubleoddpage
-    \fi
+ %   \fi
     \thispagestyle{plain}%
     \addcontentsline{toc}{chapter}{Scene \thescene\if\relax\detokenize{#3}\relax\else: #3\fi}%
     \IfBooleanF{#1}{\IfNoValueTF{#3}{\printscene}{\printscene[#3]}}%
 }
 
-% \NewDocumentCommand{\Act}{s m o}{%
-    % \cleardoublepage
-    % \setact{#2}%
-    % \thispagestyle{plain}%
-    % \addtocontents{toc}{\protect\needspace{4\baselineskip}}%
-    % \addcontentsline{toc}{part}{Act \theactnum}%
-    % \IfBooleanF{#1}{\IfNoValueTF{#3}{\printact}{\printact[#3]}}%
-% }
-
-% \NewDocumentCommand{\Scene}{s m o}{%
-    % \setscene{#2}%
-    % \ifnum\value{scenenum}>1\relax
-        % \cleardoublepage
-    % \fi
-    % \thispagestyle{plain}%
-    % \addcontentsline{toc}{chapter}{Scene \thescene\if\relax\detokenize{#3}\relax\else: #3\fi}%
-    % \IfBooleanF{#1}{\IfNoValueTF{#3}{\printscene}{\printscene[#3]}}%
-% }
 
 % KOMA-Script TOC formatting
 \RedeclareSectionCommand[
@@ -405,63 +391,12 @@ ItalicFont = *-Italic.otf
 \DeclareRobustCommand{\exit}[1]{\stage{Exit #1}\goodbreak}
 \DeclareRobustCommand{\exeunt}[1][]{\stage{Exeunt\if\relax\detokenize{#1}\relax\else\ #1\fi}}
 
-% Song-specific commands and environments
-\newcommand{\songtitle}[1]{%
-    \par
-    \needspace{4\baselineskip}% Title + first line
-    \vspace{\speakerspace}%
-    \centering\textit{#1}\par
-    \vspace{0.5\speakerspace}%
-}
 
-% Single song line with optional indentation level
-\newcommand{\songline}[2][0]{%
-    \par
-    \noindent\hspace*{\dimexpr\textindent + #1\songindent}\textit{#2}\par
-}
-
-% Refrain/chorus command with fixed indentation
-\newcommand{\refrain}[1]{%
-    \par
-    \begingroup
-    \leftskip=\refrainindent
-    \rightskip=\refrainindent
-    \noindent\textit{#1}\par
-    \endgroup
-}
-
-% Complete song environment
-\newenvironment{song}[1][]{%
-    \par\vspace{\speakerspace}%
-    \if\relax\detokenize{#1}\relax\else
-        \songtitle{#1}%
-    \fi
-    \begingroup
-    \leftskip=\textindent  % align with regular text
-    \parindent=0pt
-    \itshape
-    \ignorespaces
-}{%
-    \par
-    \endgroup
-    \vspace{\speakerspace}%
-}
-
-% Stanza environment for grouping song lines
-\newenvironment{stanza}{%
-    \par
-    \needspace{4\baselineskip}% Keep stanza together if possible
-    \addvspace{0.5\baselineskip}%
-}{%
-    \par
-    \addvspace{0.5\baselineskip}%
-}
 
 % Configuration commands
 \newcommand{\setspspace}[1]{\setlength{\speakerspace}{#1}}
 \newcommand{\setstagespace}[1]{\setlength{\stagespace}{#1}}
 \newcommand{\settextindent}[1]{\setlength{\textindent}{#1}}
-\newcommand{\setsongindent}[1]{\setlength{\songindent}{#1}}
 
 \makeatother
 

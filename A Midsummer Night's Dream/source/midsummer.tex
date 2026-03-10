@@ -1,6 +1,6 @@
 \documentclass[
-%paper=5.5in:8.5in,
-a5paper,
+paper=5.5in:8.5in,
+%a5paper,
 ]{scrbook} % Document font size and paper size
 
 \title{A Midsummer Night's Dream}
@@ -9,6 +9,7 @@ a5paper,
 \usepackage{bard}
 \usepackage{illustrations}
 \usepackage{pdfpages}
+\NewHook{cmd/@startsection/before} %workaround for a MiKTeX issue (https://github.com/MiKTeX/miktex-packaging/issues/492) 
 
 \DeclareTOCStyleEntry[beforeskip=.4em]{part}{part}
 
@@ -18,21 +19,23 @@ a5paper,
 
 \pagestyle{plain}
 \KOMAoptions{headings=openany}
-\includepdf[width=\basicwidth,pagecommand={\thispagestyle{plain}}]{dramper.jpg}
+
+
 \renewcommand*{\chapterheadstartvskip}{\vspace{0pt}} %scootch up TOC header
+\include{chapters/dramper.tex}
+\begin{letter}
 \imagetoc{contents}{0.7}
 \tableofcontents
+\end{letter}
+\begin{a4}
+\imagetoc{contents}{0.6}
+\tableofcontents
+\end{a4}
+
 \KOMAoptions{headings=openany}
 \cleardoubleoddpage
 
-%\includepdf[addtotoc={1,chapter,0,{Dramatis Person\ae},},width=\basicwidth]{dramper.jpg}
 
-
-
-
-%\KOMAoptions{headings=openleft}
-%\imagelof{illus}{List of Illustrations}{0.7}
-%\listoffigures
  
 \mainmatter
 \KOMAoptions{headings=openright}
