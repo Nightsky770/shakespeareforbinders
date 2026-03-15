@@ -8,7 +8,7 @@ paper=5.5in:8.5in,
 
 \usepackage{bard}
 \usepackage{illustrations}
-\usepackage{pdfpages}
+
 \NewHook{cmd/@startsection/before} %workaround for a MiKTeX issue (https://github.com/MiKTeX/miktex-packaging/issues/492) 
 
 \DeclareTOCStyleEntry[beforeskip=.4em]{part}{part}
@@ -19,21 +19,11 @@ paper=5.5in:8.5in,
 
 \pagestyle{plain}
 \KOMAoptions{headings=openleft}
-%\includepdf[width=\basicwidth,pagecommand={\thispagestyle{plain}}]{dramper.jpg}
 \renewcommand*{\chapterheadstartvskip}{\vspace{0pt}} %scootch up TOC header
 \imagetoc{contents}{0.5}
 \tableofcontents
-%\KOMAoptions{headings=openany}
-%\cleardoubleoddpage
 
-%\includepdf[addtotoc={1,chapter,0,{Dramatis Person\ae},},width=\basicwidth]{dramper.jpg}
 \include{chapters/dramper.tex}
-
-
-
-%\KOMAoptions{headings=openleft}
-%\imagelof{illus}{List of Illustrations}{0.7}
-%\listoffigures
  
 \mainmatter
 \KOMAoptions{headings=openright}
@@ -51,19 +41,19 @@ paper=5.5in:8.5in,
 \include{chapters/2v.tex}
 \include{chapters/2vi.tex}
 \include{chapters/2vii.tex}
-\cleardoubleoddpage
+\cleardoubleoddpage %shouldn't be needed - fix
 \includepdf[width=\basicwidth,pagecommand={\Act*{3}\thispagestyle{plain}}]{act3head.jpg}
 \include{chapters/3i.tex}
 \include{chapters/3ii.tex}
 \include{chapters/3iii.tex}
 \include{chapters/3iv.tex}
 \include{chapters/3v.tex}
-\cleardoubleoddpage
+\cleardoubleoddpage  %shouldn't be needed - fix
 \includepdf[width=\basicwidth,pagecommand={\Act*{4}\thispagestyle{plain}}]{act4head.jpg}
 \include{chapters/4i.tex}
 \include{chapters/4ii.tex}
 \include{chapters/4iii.tex}
-\cleardoubleoddpage
+\cleardoubleoddpage  %shouldn't be needed - fix
 \includepdf[width=\basicwidth,pagecommand={\Act*{5}\thispagestyle{plain}}]{act5head.jpg}
 \include{chapters/5i.tex}
 \include{chapters/5ii.tex}
