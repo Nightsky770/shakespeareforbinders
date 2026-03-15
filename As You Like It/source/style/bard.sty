@@ -46,13 +46,7 @@
 \KOMAoption{listof}{flat,nochaptergap,totoc}
 \KOMAoption{toc}{listof}
 
-%some basic setup that we can alter to suit our tastes
-\newcommand{\setspspace}[1]{\setlength{\speakerspace}{#1}}
-\newcommand{\setstagespace}[1]{\setlength{\stagespace}{#1}}
-\newcommand{\settextindent}[1]{\setlength{\textindent}{#1}}
-\newcommand{\prevline}[1]{\hspace{\widthof{#1}}}
-\newcommand{\character}[1]{\textsc{#1}}
-\newcommand{\setting}[1]{\centering\textit{(#1)}}
+
 
 % Option handling - simplified for bard
 \def\bard@chapterfont{\normalfont}
@@ -61,6 +55,38 @@
 \ProcessOptions\relax
 
 \makeatletter
+
+%some basic setup that we can alter to suit our tastes
+\newcommand{\setspspace}[1]{\setlength{\speakerspace}{#1}}
+\newcommand{\setstagespace}[1]{\setlength{\stagespace}{#1}}
+\newcommand{\settextindent}[1]{\setlength{\textindent}{#1}}
+\newcommand{\prevline}[1]{\hspace{\widthof{#1}}}
+\newcommand{\character}[1]{\textsc{#1}}
+\newcommand{\setting}[1]{\centering\textit{#1}}
+
+% Basic lengths for speech formatting
+\newlength{\speakerspace}
+\newlength{\stagespace}
+\newlength{\textindent}
+\newlength{\refrainindent}
+\setlength{\speakerspace}{0.5\baselineskip}
+\setlength{\stagespace}{0.15\baselineskip plus 0.1\baselineskip minus 0.1\baselineskip}
+\setlength{\textindent}{2em}
+
+% %% enumitem setup for lists of characters and use of the \verse environment
+\setlist{wide,nosep,style=unboxed}
+\addtokomafont{descriptionlabel}{\normalfont\scshape}
+
+%%%%%%%%%%%%% setting up verse for songs %%%%%%%%%%%%%%%%
+\renewcommand{\poemtitlefont}{\normalfont\scshape\large\centering}
+\setlist{nolistsep}
+\AtBeginEnvironment{verse}{%
+    \setlength{\topsep}{0pt}%
+    \setlength{\partopsep}{0pt}%
+}
+
+
+%%%%%%%%%%%%% end verse setup %%%%%%%%%%%%%%%
 
 % Paper size selection from bindery.sty
 \newif\ifafour
@@ -139,9 +165,8 @@ ItalicFont = *-Italic.otf
 \newcommand*\hideentrynumber[1]{}
 \graphicspath{ {./images/} }
 
-% %% enumitem setup for lists of characters
-\setlist{wide,nosep,style=unboxed}
-\addtokomafont{descriptionlabel}{\normalfont\scshape}
+
+
 
 % TOC font setup - use document's main font AND custom chapter font for title
 \addtokomafont{disposition}{\rmfamily}
@@ -160,15 +185,6 @@ ItalicFont = *-Italic.otf
 \newcommand\longdots{\mbox{\textellipsis\,}\ignorespaces{}}
 \newcommand\doubleemdash{⸺}
 
-\renewcommand*{\partformat}{\partname~\thepart}
-
-% Nice portable scene divider from bindery.sty
-\newcommand{\divider}{%
-  \par\vspace{0.5em plus 1em minus 0.25em}%
-  \noindent\hfil\rule{0.5\textwidth}{.4pt}\hfil%
-  \par\vspace{0.5em plus 1em minus 0.25em}%
-}
-
 \flushbottom
 
 % Epigraph setup from bindery.sty
@@ -186,12 +202,6 @@ ItalicFont = *-Italic.otf
   beforeskip=2.0\baselineskip,
   afterskip=1.5\baselineskip
 ]{chapter}
-
-% Part heads from bindery.sty
-\patchcmd\@part
-  {\thepart\hspace{1em}}
-  {\HUGE\bfseries{\partname}\ \thepart\hspace{1em}}
-  {}{}
 
 % Simplified header setup for plays - always use play title and act/scene
 \automark{chapter}
@@ -226,14 +236,7 @@ ItalicFont = *-Italic.otf
 \newcommand{\theact}{\theactnum}
 \newcommand{\thescene}{\thescenenum}
 
-% Basic lengths for speech formatting
-\newlength{\speakerspace}
-\newlength{\stagespace}
-\newlength{\textindent}
-\newlength{\refrainindent}
-\setlength{\speakerspace}{0.5\baselineskip}
-\setlength{\stagespace}{0.15\baselineskip plus 0.1\baselineskip minus 0.1\baselineskip}
-\setlength{\textindent}{2em}
+
 
 
 % Act and Scene handling
@@ -284,16 +287,7 @@ ItalicFont = *-Italic.otf
 }
 
 
-%% setting up verse for songs
-\renewcommand{\poemtitlefont}{\normalfont\scshape\large\centering}
 
-% \setlength{\vgap}{0.5\baselineskip plus 0.25\baselineskip minus 0.15\baselineskip}
-% \setlength{\vgap}{1.5em}
-% \newcommand{\vin}{\hspace*{\vgap}}
-% \newlength{\vindent}
-% \setlength{\vindent}{2\vgap}
-% \newlength{\stanzaskip}
-% \setlength{\stanzaskip}{0.75\baselineskip}
 
 % TOC formatting
 \RedeclareSectionCommand[
