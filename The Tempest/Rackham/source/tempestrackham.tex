@@ -6,7 +6,8 @@ a5paper,
 ]{scrbook} % Document font size and paper size
 \usepackage{bard}
 \usepackage{illustrations}
-\usepackage{pdfpages}
+
+\NewHook{cmd/@startsection/before} %workaround for a MiKTeX issue (https://github.com/MiKTeX/miktex-packaging/issues/492) 
 
 \title{The Tempest}
 \author{William Shakespeare}
@@ -23,7 +24,7 @@ a5paper,
 \frontmatter
 
 	\includepdf[width=\basicwidth]{images/titlepage.jpg}
-	\includepdf[addtotoc={1,chapter,0,{Dramatis Person\ae},},width=\basicwidth]{images/drampat.jpg}
+	\includepdf[addtotoc={1,chapter,0,{Dramatis Person\ae},},width=\basicwidth,pagecommand=\thispagestyle{plain}]{images/drampat.jpg}
 
 \tableofcontents
 
@@ -53,7 +54,7 @@ a5paper,
 \centering
 
 \begin{minipage}{\textwidth}
-\textit{The Tempest} was probably written in 1610 or 1611, not long before William Shakespeare (1564--1616) retired from the stage and returned to his native Stratford-upon-Avon. It was first published by William Jaggard in London, in 1623, as part of \textit{Mr. William Shakespeare's Comedies, Histories, \& Tragedies; Published according to the True and Original Copies}: the so-called <First Folio>.
+\textit{The Tempest} was probably written in 1610 or 1611, not long before William Shakespeare (1564--1616) retired from the stage and returned to his native Stratford-upon-Avon. It was first published by William Jaggard in London, in 1623, as part of \textit{Mr. William Shakespeare's Comedies, Histories, \& Tragedies; Published according to the True and Original Copies}: the <First Folio>.
 
 Illustrations by Arthur Rackham (1867--1939) are from a 1926 edition published by William Heinemann Ltd. in London (UK) and by Doubleday, Page \& Co. in New York City (USA). 
 \end{minipage}

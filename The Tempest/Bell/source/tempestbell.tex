@@ -1,11 +1,11 @@
 \documentclass[
-paper=5.5in:8.5in,
-%a5paper,
+%paper=5.5in:8.5in,
+a5paper,
 ]{scrbook} % Document font size and paper size
 \usepackage{bard}
 \usepackage{illustrations}
-\usepackage{pdfpages}
 
+\NewHook{cmd/@startsection/before} %workaround for a MiKTeX issue (https://github.com/MiKTeX/miktex-packaging/issues/492) 
 
 \title{The Tempest}
 \author{William Shakespeare}
@@ -31,7 +31,7 @@ paper=5.5in:8.5in,
 		\includepdf[width=.65\textwidth]{images/milan.jpg}
 		\includepdf[width=.75\textwidth]{images/naples.jpg}
 \end{a4}
-\includepdf[width=\basicwidth]{images/dramper.jpg}
+	\includepdf[addtotoc={1,chapter,0,{Dramatis Person\ae},},width=\basicwidth,pagecommand=\thispagestyle{plain}]{images/dramper.jpg}
 			
 
 \mainmatter
@@ -87,7 +87,7 @@ paper=5.5in:8.5in,
 \enlargethispage{\baselineskip}
 
 \begin{minipage}{\textwidth}
-\textit{The Tempest} was probably written in 1610 or 1611, not long before William Shakespeare (1564--1616) retired from the stage and returned to his native Stratford-upon-Avon. It was first published by William Jaggard in London, in 1623, as part of \textit{Mr. William Shakespeare's Comedies, Histories, \& Tragedies; Published according to the True and Original Copies}: the so-called <First Folio>.
+\textit{The Tempest} was probably written in 1610 or 1611, not long before William Shakespeare (1564--1616) retired from the stage and returned to his native Stratford-upon-Avon. It was first published by William Jaggard in London, in 1623, as part of \textit{Mr. William Shakespeare's Comedies, Histories, \& Tragedies; Published according to the True and Original Copies}: the <First Folio>.
 
 Illustrations by British artist Robert Anning Bell (1863--1933) are from a 1901 edition published in London (UK) by Freemantle \& Co. Grateful acknowledgement is made to the Folger Shakespeare Library in Washington D.C. (USA) for making available excellent-quality scans.
 \end{minipage}

@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{bard}[2024/10/22 v2.0 Shakespeare play formatting based on bindery.sty]
+\ProvidesPackage{bard}
 
 % All packages from bindery.sty
 \RequirePackage{xcolor}
@@ -45,6 +45,14 @@
 \KOMAoption{numbers}{noenddot}
 \KOMAoption{listof}{flat,nochaptergap,totoc}
 \KOMAoption{toc}{listof}
+
+%some basic setup that we can alter to suit our tastes
+\newcommand{\setspspace}[1]{\setlength{\speakerspace}{#1}}
+\newcommand{\setstagespace}[1]{\setlength{\stagespace}{#1}}
+\newcommand{\settextindent}[1]{\setlength{\textindent}{#1}}
+\newcommand{\prevline}[1]{\hspace{\widthof{#1}}}
+\newcommand{\character}[1]{\textsc{#1}}
+\newcommand{\setting}[1]{\centering\textit{(#1)}}
 
 % Option handling - simplified for bard
 \def\bard@chapterfont{\normalfont}
@@ -129,8 +137,12 @@ ItalicFont = *-Italic.otf
 % Language and misc setup from bindery.sty
 \setdefaultlanguage[variant=uk]{english}
 \newcommand*\hideentrynumber[1]{}
-\setlist[description]{font=\normalfont\bfseries}
+%\setlist[description]{font=\normalfont\bfseries} %%revisit--conflicts with how we're doing dramatis personae now
 \graphicspath{ {./images/} }
+
+% %% enumitem setup for lists of characters
+% \setlist{wide,nosep,style=unboxed}
+% \addtokomafont{descriptionlabel}{\normalfont\scshape}
 
 % TOC font setup - use document's main font AND custom chapter font for title
 \addtokomafont{disposition}{\rmfamily}
@@ -219,13 +231,11 @@ ItalicFont = *-Italic.otf
 \newlength{\speakerspace}
 \newlength{\stagespace}
 \newlength{\textindent}
-\newlength{\songindent}
 \newlength{\refrainindent}
 \setlength{\speakerspace}{0.5\baselineskip}
 \setlength{\stagespace}{0.15\baselineskip plus 0.1\baselineskip minus 0.1\baselineskip}
 \setlength{\textindent}{2em}
-\setlength{\songindent}{2em}
-\setlength{\refrainindent}{4em}  % Additional indent for refrains
+
 
 % Act and Scene handling
 \newcommand{\setact}[1]{\setcounter{actnum}{#1}}
@@ -240,14 +250,15 @@ ItalicFont = *-Italic.otf
 }
 
 \newcommand{\printscene}[1][]{%
-    \thispagestyle{plain}%
-    \medskip
+	\thispagestyle{plain}%
+    % \medskip
+	\vspace*{2\baselineskip}
     \needspace{6\baselineskip}% Ensure room for title + some content
     \begingroup
-    \centerline{\Large\chapterfont{Act \theactnum}}%
-    \centerline{\large\chapterfont{Scene \thescenenum}}%
+    \centerline{\Large\chapterfont{Scene \thescenenum}}%
     \if\relax\detokenize{#1}\relax\else
-        \centerline{\large\textit{#1}}%
+        \smallskip
+		\centerline{\large\textit{#1}}%
     \fi
     \endgroup
     \medskip
@@ -265,34 +276,27 @@ ItalicFont = *-Italic.otf
 
 \NewDocumentCommand{\Scene}{s m o}{%
     \setscene{#2}%
-    \ifnum\value{scenenum}>1\relax
+ %   \ifnum\value{scenenum}>1\relax
 		\cleardoubleoddpage
-    \fi
+ %   \fi
     \thispagestyle{plain}%
     \addcontentsline{toc}{chapter}{Scene \thescene\if\relax\detokenize{#3}\relax\else: #3\fi}%
     \IfBooleanF{#1}{\IfNoValueTF{#3}{\printscene}{\printscene[#3]}}%
 }
 
-% \NewDocumentCommand{\Act}{s m o}{%
-    % \cleardoublepage
-    % \setact{#2}%
-    % \thispagestyle{plain}%
-    % \addtocontents{toc}{\protect\needspace{4\baselineskip}}%
-    % \addcontentsline{toc}{part}{Act \theactnum}%
-    % \IfBooleanF{#1}{\IfNoValueTF{#3}{\printact}{\printact[#3]}}%
-% }
 
-% \NewDocumentCommand{\Scene}{s m o}{%
-    % \setscene{#2}%
-    % \ifnum\value{scenenum}>1\relax
-        % \cleardoublepage
-    % \fi
-    % \thispagestyle{plain}%
-    % \addcontentsline{toc}{chapter}{Scene \thescene\if\relax\detokenize{#3}\relax\else: #3\fi}%
-    % \IfBooleanF{#1}{\IfNoValueTF{#3}{\printscene}{\printscene[#3]}}%
-% }
+%% setting up verse for songs
+\renewcommand{\poemtitlefont}{\normalfont\scshape\large\centering}
 
-% KOMA-Script TOC formatting
+% \setlength{\vgap}{0.5\baselineskip plus 0.25\baselineskip minus 0.15\baselineskip}
+% \setlength{\vgap}{1.5em}
+% \newcommand{\vin}{\hspace*{\vgap}}
+% \newlength{\vindent}
+% \setlength{\vindent}{2\vgap}
+% \newlength{\stanzaskip}
+% \setlength{\stanzaskip}{0.75\baselineskip}
+
+% TOC formatting
 \RedeclareSectionCommand[
     tocindent=0pt,
     tocnumwidth=2em
@@ -303,6 +307,7 @@ ItalicFont = *-Italic.otf
     tocnumwidth=2em
 ]{chapter}
 
+% List of Illustrations formatting
 \DeclareTOCStyleEntry[
     beforeskip=2\baselineskip,
     linefill=\TOCLineLeaderFill,
@@ -319,63 +324,75 @@ ItalicFont = *-Italic.otf
     indent=2em
 ]{tocline}{chapter}
 
-\setcounter{tocdepth}{0}
+\setcounter{tocdepth}{0} %down to chapter (scene) level only
 
-% Single verse line with spacing to match environments
-\newcommand{\verseline}[2][]{%
-    \par\vspace{\speakerspace}%
-    \if\relax\detokenize{#1}\relax\else
-        \nobreak\penalty10000  % Prevent break after speaker
-        \centering\textsc{#1}\par
-        \nobreak\penalty10000  % Prevent break after speaker
-    \fi
-    \leftskip=\textindent
-    \parindent=0pt
-    \noindent#2\par
-}
 
-% Main verse speech environment
-\newenvironment{verse_speech}[1][]{%
-    \par
-    \needspace{3\baselineskip}% Speaker name + first line
+
+
+% Speech command - handles both verse (with \\) and prose (without)
+% \speech[Speaker][Addressee]{text}
+\NewDocumentCommand{\speech}{o o +m}{%
+    \goodbreak\par
+    \needspace{3\baselineskip}%
     \vspace{\speakerspace}%
-    \if\relax\detokenize{#1}\relax\else
-        \nobreak\penalty10000  % Prevent break after speaker
-        \centering\textsc{#1}\par
-        \nobreak\penalty10000  % Prevent break after speaker
-    \fi
+    \IfValueT{#1}{%
+        \centering\character{#1}\par
+        \nobreak\penalty10000
+    }%
+    \IfValueT{#2}{%
+        \begingroup
+        \leftskip=\textindent
+        \rightskip=0pt plus 1fil
+        \noindent\textit{(To~\character{#2})}\par
+        \endgroup
+        \nobreak\penalty10000
+    }%
+    \begingroup
     \leftskip=\textindent
     \parindent=0pt
     \parfillskip=0pt plus1fil
-    \ignorespaces
-}{%
-    \par
+    \ignorespaces#3\par
+    \endgroup
 }
 
-% Prose speech environment
-\newenvironment{prose_speech}[1][]{%
-    \par
-    \needspace{3\baselineskip}% Speaker name + first line
-    \vspace{\speakerspace}%
-    \if\relax\detokenize{#1}\relax\else
-        \nobreak\penalty10000  % Prevent break after speaker
-        \centering\textsc{#1}\par
-        \nobreak\penalty10000  % Prevent break after speaker
+% Aside handling
+% The syntax for this is weird, unavoidably. Each command has an optional argument that represents a previous line--that is, if a character's speech begins by completing the previous speaker's line--that's used to set the horizontal space.
+%
+% \speech[Prospero]{\aside[I ever saw so noble.]{It goes on, I see...}}:
+%	* Prospero is speaking. 
+% * His speech is an aside. (\aside{})
+% * Prospero's line "It goes on..." will be indented by the width of "I ever saw so noble." (Miranda's line that he is completing) MINUS the width of the "[Aside]" label.
+% 
+% Things get more complicated with \asideto. Whitespace added for clarity:
+% \speech[Sebastian]{
+%	\asideto[That you resolved to effect.]{Antonio}{
+%		The next advantage\\ Will we take throughly.
+%	}
+% }
+% * Sebastian is speaking
+% * His speech is an aside to Antonio
+% * His speech completes somebody else's line "That you resolved to effect."
+% * His speech will be indented by the width of "That you resolved to effect" MINUS the width of the "[Aside to ANTONIO]" label
+
+
+\newcommand{\aside}[2][]{%
+    \if\relax\detokenize{#1}\relax
+        \par\noindent\normalfont\textit{[Aside]}~\textit{#2}%
+    \else
+		\par\noindent\normalfont\textit{[Aside]~}
+        \hspace{\widthof{#1}-\widthof{[Aside]~}}%
+        \textit{#2}%
     \fi
-    \leftskip=\textindent
-    \parindent=0pt
-    \ignorespaces
-}{%
-    \par
 }
 
-% Aside handling with protected font
-\newcommand{\aside}[1]{%
-    \normalfont\textit{[Aside]}\space\textit{#1}%
-}
-
-\newcommand{\asideto}[2]{%
-    \normalfont\textit{[Aside to \textsc{#1}]}\space\textit{#2}%
+\newcommand{\asideto}[3][]{%
+    \if\relax\detokenize{#1}\relax
+        \par\noindent\normalfont\textit{[Aside~to~\character{#2}]}~\textit{#3}%
+    \else
+        \par\noindent\normalfont\textit{[Aside~to~\character{#2}]~}
+		\hspace{\widthof{#1}-\widthof{[Aside~to~\character{#2}]~}}%
+        \textit{#3}%
+    \fi
 }
 
 % Stage directions aligned with text
@@ -400,68 +417,62 @@ ItalicFont = *-Italic.otf
 % All stage directions use the same format
 \newcommand{\stagedir}[1]{\stage{#1}}
 
-% Entry/exit stage directions use the same format
-\DeclareRobustCommand{\enter}[1]{\goodbreak\stage{Enter #1}}
-\DeclareRobustCommand{\exit}[1]{\stage{Exit #1}\goodbreak}
-\DeclareRobustCommand{\exeunt}[1][]{\stage{Exeunt\if\relax\detokenize{#1}\relax\else\ #1\fi}}
 
-% Song-specific commands and environments
-\newcommand{\songtitle}[1]{%
-    \par
-    \needspace{4\baselineskip}% Title + first line
-    \vspace{\speakerspace}%
-    \centering\textit{#1}\par
-    \vspace{0.5\speakerspace}%
+% All new, all singing, all dancing \exit command! Now can count!
+% The star versions print "Enter" (or "Exit") followed by a string that the commands do not attempt to format. This allows for flexibility, but does require you to mark any character names with \character{}, whereas the non-starred versions will do that for you.
+% \enter{Romeo,Juliet}  -> (Enter ROMEO and JULIET.)
+% \enter*{\character{Ferdinand,} bearing a pile of logs.} -> (Enter FERDINAND, bearing a pile of logs.)
+% \exit{} (with no arguments) prints "(Exeunt omnes.)" There is no corresponding \enter{} command.
+
+\ExplSyntaxOn
+
+\seq_new:N \l_exit_seq
+
+\cs_new:Npn \__stage_format_seq:N #1 {
+  \int_set:Nn \l_tmpa_int { \seq_count:N #1 }
+  \seq_indexed_map_inline:Nn #1 {
+    \int_compare:nTF { ##1 = 1 }
+      { \character{##2} }
+      {
+        \int_compare:nTF { ##1 = \l_tmpa_int }
+          { ~and~\character{##2} }
+          { ,~\character{##2} }
+      }
+  }
 }
 
-% Single song line with optional indentation level
-\newcommand{\songline}[2][0]{%
-    \par
-    \noindent\hspace*{\dimexpr\textindent + #1\songindent}\textit{#2}\par
+\NewDocumentCommand{\exit}{s m}{%
+  \IfBooleanTF{#1}
+    { \stage{Exit~#2} }
+    {
+      \tl_if_blank:nTF {#2}
+        { \stage{Exeunt~omnes.} }
+        {
+          \seq_set_split:Nnn \l_exit_seq {,} {#2}
+          \int_compare:nTF { \seq_count:N \l_exit_seq = 1 }
+            { \stage{Exit~\__stage_format_seq:N \l_exit_seq.} }
+            { \stage{Exeunt~\__stage_format_seq:N \l_exit_seq.} }
+        }
+    }
+  \goodbreak
 }
 
-% Refrain/chorus command with fixed indentation
-\newcommand{\refrain}[1]{%
-    \par
-    \begingroup
-    \leftskip=\refrainindent
-    \rightskip=\refrainindent
-    \noindent\textit{#1}\par
-    \endgroup
+\NewDocumentCommand{\enter}{s m}{%
+  \IfBooleanTF{#1}
+    { \goodbreak\stage{Enter~#2} }
+    {
+      \seq_set_split:Nnn \l_exit_seq {,} {#2}
+      \goodbreak\stage{Enter~\__stage_format_seq:N \l_exit_seq.}
+    }
 }
 
-% Complete song environment
-\newenvironment{song}[1][]{%
-    \par\vspace{\speakerspace}%
-    \if\relax\detokenize{#1}\relax\else
-        \songtitle{#1}%
-    \fi
-    \begingroup
-    \leftskip=\textindent  % align with regular text
-    \parindent=0pt
-    \itshape
-    \ignorespaces
-}{%
-    \par
-    \endgroup
-    \vspace{\speakerspace}%
-}
+\ExplSyntaxOff
 
-% Stanza environment for grouping song lines
-\newenvironment{stanza}{%
-    \par
-    \needspace{4\baselineskip}% Keep stanza together if possible
-    \addvspace{0.5\baselineskip}%
-}{%
-    \par
-    \addvspace{0.5\baselineskip}%
-}
 
-% Configuration commands
-\newcommand{\setspspace}[1]{\setlength{\speakerspace}{#1}}
-\newcommand{\setstagespace}[1]{\setlength{\stagespace}{#1}}
-\newcommand{\settextindent}[1]{\setlength{\textindent}{#1}}
-\newcommand{\setsongindent}[1]{\setlength{\songindent}{#1}}
+
+
+
+
 
 \makeatother
 
