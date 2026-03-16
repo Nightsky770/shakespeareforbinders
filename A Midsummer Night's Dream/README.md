@@ -1,4 +1,4 @@
-A Midsummer Night's Dream, illustrated in color and black and white by Arthur Rackham for a 1908 edition. 
+_A Midsummer Night's Dream_, illustrated in color and black and white by Arthur Rackham for a 1908 edition. 
 
 If you are using letter paper, download the contents of the letter folder and print out double-sided, flip on short side. If you are using A4 paper, download the contents of the A4 folder and print out double-sided, flip on short side.
 
