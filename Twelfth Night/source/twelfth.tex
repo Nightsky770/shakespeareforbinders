@@ -1,0 +1,97 @@
+\documentclass[
+%paper=5.5in:8.5in,
+a5paper,
+]{scrbook} % Document font size and paper size
+\usepackage{bard}
+\usepackage{illustrations}
+
+\NewHook{cmd/@startsection/before} %workaround for a MiKTeX issue (https://github.com/MiKTeX/miktex-packaging/issues/492) 
+
+\title{Twelfth Night}
+\renewfontfamily\chapterfont{DellaRespira-Regular.ttf}
+
+\DeclareTOCStyleEntry[beforeskip=1em]{part}{part}
+
+\def\topedgesink{-1.5cm}
+\def\textsink{5cm}
+
+\begin{document}
+\frontmatter
+
+	\includepdf[width=\basicwidth]{images/titlepage.jpg}
+
+\include{chapters/dramper.tex}
+\KOMAoptions{headings=openright}
+\tableofcontents
+
+\mainmatter
+\KOMAoptions{headings=openright}
+\includepdf[width=0.5\textwidth,pagecommand={\Act*{1}\thispagestyle{plain}}]{act1.jpg}
+\include{chapters/1i.tex}
+\include{chapters/1ii.tex}
+\include{chapters/1iii.tex}
+\include{chapters/1iv.tex}
+\include{chapters/1v.tex}
+
+\cleardoubleoddpage
+\includepdf[width=0.5\textwidth,pagecommand={\Act*{2}\thispagestyle{plain}}]{act2.jpg}
+\include{chapters/2i.tex}
+\include{chapters/2ii.tex}
+\include{chapters/2iii.tex}
+\include{chapters/2iv.tex}
+\include{chapters/2v.tex}
+
+\cleardoubleoddpage
+\includepdf[width=0.5\textwidth,pagecommand={\Act*{3}\thispagestyle{plain}}]{act3.jpg}
+\include{chapters/3i.tex}
+\include{chapters/3ii.tex}
+\include{chapters/3iii.tex}
+\include{chapters/3iv.tex}
+
+\cleardoubleoddpage
+\includepdf[width=\basicwidth,pagecommand={\Act*{4}\thispagestyle{plain}}]{act4.jpg}
+\include{chapters/4i.tex}
+\include{chapters/4ii.tex}
+\include{chapters/4iii.tex}
+
+\includepdf[width=\basicwidth,pagecommand={\Act*{5}\thispagestyle{plain}}]{act5.jpg}
+\include{chapters/5i.tex}
+
+
+\RedeclareSectionCommand[afterskip=1cm,beforeskip=0cm]{chapter}
+\KOMAoptions{headings=openleft}
+\chapter*{Colophon}
+%\setfontfamily\chapterfont{DellaRespira-Regular.ttf}
+\centering
+
+\begin{minipage}{\textwidth}
+The first documented public performance of \textit{Twelfth Night} was on 2 February 1602. Twelfth Night--the night before Epiphany (6 January), or the twelfth night after Christmas--was, in Elizabethan times, a festival of licensed disorder presided over by a <Lord of Misrule>, so William Shakespeare's (1564--1616) merry comedy of mistaken identities would have been suitably <topsy-turvy> entertainment. \textit{Twelfth Night} was first published by William Jaggard in London, in 1623, as part of \textit{Mr. William Shakespeare's Comedies, Histories, \& Tragedies; Published according to the True and Original Copies}: the <First Folio>.
+
+Illustrations by British artist William Heath Robinson (1872--1944) are from a 1913 edition published by Hodder \& Stoughton in London (UK).
+\end{minipage}
+\vfill
+gutenberg.org/ebooks/1123
+\vfill
+\rule{0.5\textwidth}{.4pt}
+\vfill
+\begin{minipage}{\textwidth}
+Text is set in <EB Garamond,> Georg Mayr-Duffner's free and open source implementation of Claude Garamond’s famous humanist typefaces from the mid-sixteenth century. 
+
+Chapter heads are set in <Della Respira,> by Nathan Willis, based on the 1913 American Type Founders font <Della Robbia.>
+\end{minipage}
+\vfill
+github.com/georgd/EB-Garamond\\www.glyphography.com/fonts/
+\vfill
+\rule{0.5\textwidth}{.4pt}
+\vfill
+\begin{minipage}{\textwidth}
+This typeset is dedicated to the public domain under a Creative Commons CC0 1.0 Universal deed: creativecommons.org/publicdomain/zero/1.0/\\
+\end{minipage}
+\vfill
+\rule{0.5\textwidth}{.4pt}
+\vfill
+Typeset in \LaTeX{}. Last revised \today.
+\vfill
+\thispagestyle{empty}
+
+\end{document}
